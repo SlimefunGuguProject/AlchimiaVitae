@@ -16,16 +16,16 @@ import static me.apeiros.alchimiavitae.AlchimiaVitae.MM;
 public class ChestMenuItems {
 
     public static final ItemStack IN_BG = new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE,
-            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#ff68fc:#ff9a5c>Input</gradient>")));
+            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#ff68fc:#ff9a5c>输入</gradient>")));
 
     public static final ItemStack CRAFT_BTN = new CustomItemStack(Material.LIME_STAINED_GLASS_PANE,
-            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#39f792:#5c95ff>Craft</gradient>")),
-            "&aClick to craft");
+            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#39f792:#5c95ff>合成</gradient>")),
+            "&a点击合成");
 
     public static final ItemStack CRAFT_BG = new CustomItemStack(Material.CYAN_STAINED_GLASS_PANE,
-            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#39f792:#5c95ff>Craft</gradient>")));
+            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#39f792:#5c95ff>合成</gradient>")));
 
     public static final ItemStack OUT_BG = new CustomItemStack(Material.CYAN_STAINED_GLASS_PANE,
-            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#5cb8ff:#39f7e1>Output</gradient>")));
+            BukkitComponentSerializer.legacy().serialize(MM.parse("<gradient:#5cb8ff:#39f7e1>输出</gradient>")));
 
 }

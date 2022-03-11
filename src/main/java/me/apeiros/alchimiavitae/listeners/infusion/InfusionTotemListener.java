@@ -53,7 +53,7 @@ public class InfusionTotemListener implements Listener {
                         if (e.getItem().isSimilar(new ItemStack(Material.TOTEM_OF_UNDYING))) {
                             // Check if there are already 8 totems
                             if (totemsStored >= 8) {
-                                p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>There is no more space for this Totem!")));
+                                p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>不死图腾已满!")));
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
                                 return;
                             }
@@ -67,8 +67,8 @@ public class InfusionTotemListener implements Listener {
                             p.getInventory().getChestplate().setItemMeta(meta);
 
                             // Send a message to the player
-                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<green>Your Totem has been added to the Battery of Totems.")));
-                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>There is now 1 Totem stored." : "<green>There are now " + totemsStored + " Totems stored.")));
+                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<green>不死图腾已添加到图腾电池中.")));
+                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾.")));
 
                             // Play effects
                             p.getWorld().playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_GOLD, 1, 1);
@@ -79,7 +79,7 @@ public class InfusionTotemListener implements Listener {
                             p.getWorld().spawnParticle(Particle.END_ROD, e.getPlayer().getLocation(), 200, 1, 2, 1);
                         }
                     } else {
-                        p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>There is 1 Totem stored in the Battery of Totems." : "<green>There are " + totemsStored + " Totems stored in the Battery of Totems.")));
+                        p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾.")));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_AMBIENT, 1F, 1);
                     }
                 }

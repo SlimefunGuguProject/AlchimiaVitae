@@ -24,8 +24,8 @@ public class Items {
 
     public static final SlimefunItemStack SOUL_COLLECTOR = new SlimefunItemStack("AV_SOUL_COLLECTOR",
             Material.DIAMOND_SWORD, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#6baefa:#7145b0>Soul Collector</gradient>")),
-            "&bCollects Souls", "&bKill any mob with this", "&bto extract its Soul", "&a3x EXP drops from all mobs", "&9Wither-related mobs will", "&9drop more souls");
+            (MM.parse("<gradient:#6baefa:#7145b0>灵魂收割者</gradient>")),
+            "&b收集灵魂", "&b使用这把剑击杀任何生物", "&b将收集该生物的灵魂", "&a可获得3倍经验掉落", "&9凋灵类生物将掉落", "&9更多灵魂", "&c无法对玩家造成伤害");
 
     private static final Configuration cfg = AlchimiaVitae.i().getConfig();
 
@@ -39,8 +39,8 @@ public class Items {
 
     public static final SlimefunItemStack CONDENSED_SOUL = new SlimefunItemStack("AV_CONDENSED_SOUL",
             Material.LIGHT_BLUE_DYE, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#6baefa:#7145b0>Condensed Soul</gradient>")),
-            "&bA Soul, condensed into an orb", "&9&oPerhaps there is a way", "&9&oto manipulate its power...");
+            (MM.parse("<gradient:#6baefa:#7145b0>凝魂</gradient>")),
+            "&b凝聚成球的灵魂", "&9&o也许有方法可以", "&9&o操控它的力量...");
 
     static {
         ItemMeta meta = CONDENSED_SOUL.getItemMeta();
@@ -52,16 +52,16 @@ public class Items {
 
     public static final SlimefunItemStack PLANT_INFUSION_CHAMBER = new SlimefunItemStack("AV_PLANT_INFUSION_CHAMBER",
             Material.LIME_STAINED_GLASS, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#549c64:#1de078>Plant Infusion Chamber</gradient>")),
-            "&bCan infuse plants with dark", "&bor light energy using", "&bSouls and Magical Lumps", "",
+            (MM.parse("<gradient:#549c64:#1de078>植物注入仓</gradient>")),
+            "&b可使用灵魂向植物注入暗能量", "&b或使用魔法结晶向植物注入光能量", "",
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
             LoreBuilder.speed(1),
             LoreBuilder.powerPerSecond(64));
 
     public static final SlimefunItemStack GOOD_MAGIC_PLANT = new SlimefunItemStack("AV_GOOD_MAGIC_PLANT",
             Material.OAK_SAPLING, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#2ddae0:#31f876>Plant of Light Magic</gradient>")),
-            "&7Light Magic I", "&aRadiates with an empyreal", "&aglow like no other...");
+            (MM.parse("<gradient:#2ddae0:#31f876>光魔法植物</gradient>")),
+            "&7光魔法 I", "&a发散着至高无上,", "&a与众不同的光芒...");
 
     static {
         ItemMeta meta = GOOD_MAGIC_PLANT.getItemMeta();
@@ -73,8 +73,8 @@ public class Items {
 
     public static final SlimefunItemStack EVIL_MAGIC_PLANT = new SlimefunItemStack("AV_EVIL_MAGIC_PLANT",
             Material.OAK_SAPLING, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff5555:#ffa012>Plant of Dark Magic</gradient>")),
-            "&7Dark Magic I", "&cContains untold amounts of dark", "&cmagic locked away in its xylems...");
+            (MM.parse("<gradient:#ff5555:#ffa012>按魔法植物</gradient>")),
+            "&7暗魔法 I", "&c在它的木质中封印了", "&c无数的暗魔法...");
 
     static {
         ItemMeta meta = EVIL_MAGIC_PLANT.getItemMeta();
@@ -86,26 +86,26 @@ public class Items {
 
     public static final SlimefunItemStack GOOD_ESSENCE = new SlimefunItemStack("AV_GOOD_ESSENCE",
             Material.SUGAR, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#2ddae0:#31f876>Light Essence</gradient>")),
-            "&7Light Magic II", "&aLife. Illumination. ");
+            (MM.parse("<gradient:#2ddae0:#31f876>光之精华</gradient>")),
+            "&7光魔法 II", "&a生命与光明");
 
     public static final SlimefunItemStack EVIL_ESSENCE = new SlimefunItemStack("AV_EVIL_ESSENCE",
             Material.GUNPOWDER, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff5555:#ffa012>Dark Essence</gradient>")),
-            "&7Dark Magic II", "&cDeath. Darkness.");
+            (MM.parse("<gradient:#ff5555:#ffa012>暗之精华</gradient>")),
+            "&7暗魔法 II", "&c死亡与黑暗");
 
     public static final SlimefunItemStack EXP_CRYSTALLIZER = new SlimefunItemStack("AV_EXP_CRYSTALLIZER",
             Material.LIME_STAINED_GLASS, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#50fa75:#3dd2ff>Experience Crystallizer</gradient>")),
-            "&aForms EXP orbs into a crystalline,", "&adurable, and energetic form.",
+            (MM.parse("<gradient:#50fa75:#3dd2ff>经验结晶器</gradient>")),
+            "&a将经验球转化为晶体形态", "&a耐用且充满活力",
             LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
             LoreBuilder.speed(1),
             LoreBuilder.powerPerSecond(32));
 
     public static final SlimefunItemStack EXP_CRYSTAL = new SlimefunItemStack("AV_EXP_CRYSTAL",
             Material.EMERALD, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#50fa75:#3dd2ff>Experience Crystal</gradient>")),
-            "&aA chunk of crystalline experience");
+            (MM.parse("<gradient:#50fa75:#3dd2ff>经验晶体</gradient>")),
+            "&a一块结晶的经验");
 
     static {
         ItemMeta meta = EXP_CRYSTAL.getItemMeta();
@@ -117,8 +117,8 @@ public class Items {
 
     public static final SlimefunItemStack ILLUMIUM = new SlimefunItemStack("AV_ILLUMIUM",
             Material.IRON_INGOT, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#2ddae0:#31f876>Illumium Ingot</gradient>")),
-            "&aIt energetically effuses light in your hand");
+            (MM.parse("<gradient:#2ddae0:#31f876>光明锭</gradient>")),
+            "&a它在你手中散发着强力的光芒");
 
     static {
         ItemMeta meta = ILLUMIUM.getItemMeta();
@@ -130,8 +130,8 @@ public class Items {
 
     public static final SlimefunItemStack DARKSTEEL = new SlimefunItemStack("AV_DARKSTEEL",
             Material.NETHERITE_INGOT, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff5555:#ffa012>Darksteel Ingot</gradient>")),
-            "&cIt radiates... with darkness?");
+            (MM.parse("<gradient:#ff5555:#ffa012>暗钢锭</gradient>")),
+            "&c它在散发着...无尽的黑暗?");
 
     static {
         ItemMeta meta = DARKSTEEL.getItemMeta();
@@ -143,28 +143,28 @@ public class Items {
 
     public static final SlimefunItemStack DIVINE_ALTAR = new SlimefunItemStack("AV_DIVINE_ALTAR",
             Material.ENCHANTING_TABLE, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff5555:#ff6cfd>Divine Altar</gradient>")),
-            "&5A sacred apparatus for the", "&5performance of ancient rituals");
+            (MM.parse("<gradient:#ff5555:#ff6cfd>神圣祭坛</gradient>")),
+            "&5用于进行古代仪式的", "&5神圣装置");
 
     public static final SlimefunItemStack MOLTEN_MYSTERY_METAL = new SlimefunItemStack("AV_MOLTEN_MYSTERY_METAL",
             Material.LAVA_BUCKET, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff6745:#ff5555>Molten Mystery Metal</gradient>")),
-            "&6A conglomerate of different metals");
+            (MM.parse("<gradient:#ff6745:#ff5555>熔融神秘金属</gradient>")),
+            "&6不同金属的聚合体");
 
     public static final SlimefunItemStack MYSTERY_METAL = new SlimefunItemStack("AV_MYSTERY_METAL",
             Material.IRON_INGOT, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff6745:#ff5555>Mystery Metal Ingot</gradient>")),
-            "&6Contains many metals");
+            (MM.parse("<gradient:#ff6745:#ff5555>神秘金属锭</gradient>")),
+            "&6包含了许多的金属");
 
     public static final SlimefunItemStack POTION_OF_OSMOSIS = new SlimefunItemStack("AV_POTION_OF_OSMOSIS",
             Material.DRAGON_BREATH, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#6274e7:#8752a3>Potion of Osmosis</gradient>")),
-            "&6Absorbs your potion effects", "&6and stores them in a bottle on &eRight Click");
+            (MM.parse("<gradient:#6274e7:#8752a3>渗透药水</gradient>")),
+            "&e右键点击6吸收你身上的所有药水效果", "&6并将它们储存在药水瓶中");
 
     public static final SlimefunItemStack ORNATE_CAULDRON = new SlimefunItemStack("AV_ORNATE_CAULDRON",
             Material.CAULDRON, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#57ebbe:#f6fa2a>Ornate Cauldron</gradient>")),
-            "&2An advanced cauldron for the brewing of potions");
+            (MM.parse("<gradient:#57ebbe:#f6fa2a>华丽炼药锅</gradient>")),
+            "&2用于酿造药水的高级炼药锅");
 
     // Make sure to make the int pair at the end {time in seconds * 20, level}
     private static final Map<PotionEffectType, int[]> potEffectsMap = new HashMap<>();
@@ -194,7 +194,7 @@ public class Items {
     }
 
     public static final SlimefunItemStack BENEVOLENT_BREW = PotionUtils.makePotion(MM.parse(
-            "<gradient:#2ddae0:#31f876>Benevolent Brew</gradient>"), Color.LIME, potEffectsMap);
+            "<gradient:#2ddae0:#31f876>仁慈酿造</gradient>"), Color.LIME, potEffectsMap);
 
     static {
         // Clear the map from the previous usage
@@ -224,12 +224,12 @@ public class Items {
     }
 
     public static final SlimefunItemStack MALEVOLENT_CONCOCTION = PotionUtils.makeSplashPotion(MM.parse(
-            "<gradient:#ff5555:#ffa012>Malevolent Concoction</gradient>"), Color.MAROON, potEffectsMap);
+            "<gradient:#ff5555:#ffa012>恶毒混合物</gradient>"), Color.MAROON, potEffectsMap);
 
     public static final SlimefunItemStack ALTAR_OF_INFUSION = new SlimefunItemStack("AV_ALTAR_OF_INFUSION",
             Material.LODESTONE, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#f78770:#ff607b>Altar of Infusion</gradient>")),
-            "&5An altar that combines technology", "&5and witchcraft to infuse items with", "&5powerful properties",
-            "&dCan only infuse gold, iron, diamond, and netherite gear,", "&das well as fishing rods, bows, and crossbows");
+            (MM.parse("<gradient:#f78770:#ff607b>注入祭坛</gradient>")),
+            "&5结合了科技与巫术的祭坛", "&5可以向物品注入强大的属性",
+            "&d仅能注入金、铁、钻石、下界合金装备", "&d以及钓竿、弓、弩");
 
 }

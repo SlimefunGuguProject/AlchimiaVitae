@@ -17,7 +17,7 @@ public class CondensedSoul extends SimpleSlimefunItem<ItemUseHandler> {
 
         super(c, Items.CONDENSED_SOUL, RecipeTypes.SOUL_COLLECTOR_TYPE, new ItemStack[] {
                 null, null, null,
-                null, new CustomItemStack(Material.DROWNED_SPAWN_EGG, "&bAny Mob", "&7Wither Skeletons and", "&7Withers have a chance", "&7to drop more souls..."), null,
+                null, new CustomItemStack(Material.DROWNED_SPAWN_EGG, "&b任何生物", "&7凋灵骷髅与凋灵", "&7会掉落更多灵魂..."), null,
                 null, null, null
         });
 
