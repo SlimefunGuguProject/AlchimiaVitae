@@ -6,7 +6,7 @@
 
 ## 下载
 
-**自动更新**: 汉化版构建#2及以后版本包含自动更新功能，默认开启。
+**自动更新**: 汉化版构建#1及以后版本包含自动更新功能，默认开启。
 
 点击这里下载 AlchimiaVitae: [下载 AlchimiaVitae](https://builds.guizhanss.net/ybw0014/AlchimiaVitae/master)
 

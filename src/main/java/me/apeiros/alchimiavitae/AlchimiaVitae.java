@@ -3,6 +3,7 @@ package me.apeiros.alchimiavitae;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.apeiros.alchimiavitae.setup.Setup;
+import net.guizhanss.guizhanlib.updater.GuizhanBuildsUpdater;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
 import net.kyori.adventure.text.minimessage.transformation.TransformationType;
@@ -28,6 +29,11 @@ public class AlchimiaVitae extends AbstractAddon implements SlimefunAddon {
     public void enable() {
         // Instance and super
         i = this;
+
+        if (getConfig().getBoolean("options.auto-update") &&
+            getDescription().getVersion().startsWith("Build")) {
+            new GuizhanBuildsUpdater(this, getFile(), "ybw0014", "AlchimiaVitae", "master", false).start();
+        }
 
         // Setup items and listeners
         Setup.setup(this);
