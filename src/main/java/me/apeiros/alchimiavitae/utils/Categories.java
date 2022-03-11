@@ -15,22 +15,22 @@ public class Categories {
 
     public static final ItemGroup GENERAL = new SubGroup(
             "av_general",
-            new CustomItemStack(Material.ENCHANTED_BOOK, "&6Alchimia Vitae &7- &2General")
+            new CustomItemStack(Material.ENCHANTED_BOOK, "&6炼金术自传 &7- &2普通")
     );
 
     public static final ItemGroup ALTAR_RECIPES = new SubGroup(
             "av_altar_recipes",
-            new CustomItemStack(Material.ENCHANTING_TABLE, "&6Alchimia Vitae &7- &5Transmutation")
+            new CustomItemStack(Material.ENCHANTING_TABLE, "&6炼金术自传 &7- &5演变")
     );
 
     public static final ItemGroup INFUSIONS = new SubGroup(
             "av_infusions",
-            new CustomItemStack(Material.LODESTONE, "&6Alchimia Vitae &7- &dInfusion")
+            new CustomItemStack(Material.LODESTONE, "&6炼金术自传 &7- &d注入")
     );
 
     public static final ItemGroup MAIN = new MultiGroup(
             "alchimia_vitae",
-            new CustomItemStack(Material.TOTEM_OF_UNDYING, "&6Alchimia Vitae"),
+            new CustomItemStack(Material.TOTEM_OF_UNDYING, "&6炼金术自传"),
             GENERAL, ALTAR_RECIPES, INFUSIONS
     );
 

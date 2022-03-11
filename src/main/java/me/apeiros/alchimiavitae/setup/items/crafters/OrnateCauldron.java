@@ -133,14 +133,14 @@ public class OrnateCauldron extends CraftingBlock {
 
         // Invalid recipe
         if (item == null) {
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>That recipe is invalid!")));
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>Please try again.")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>无效的配方!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>请重试.")));
             return;
         }
 
         // Check for space
         if (!inv.fits(item, OUT_SLOTS)) {
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>There is not enough space in the output slots!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>输出空间不足!")));
             return;
         }
 
@@ -175,7 +175,7 @@ public class OrnateCauldron extends CraftingBlock {
 
                     // Send message
                     p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                            "<gradient:#50fa75:#3dd2ff>Successful brew!</gradient>")));
+                            "<gradient:#50fa75:#3dd2ff>成功酿造!</gradient>")));
 
                     // Output the item
                     inv.pushItem(finalItem.clone(), OUT_SLOTS);

@@ -42,13 +42,13 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
         return e -> {
             // If stack size more than 1
             if (e.getItem().getAmount() > 1) {
-                e.getPlayer().sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You cannot stack Potions of Osmosis!")));
+                e.getPlayer().sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>你不能堆叠渗透药水!")));
                 return;
             }
 
             // If player has no effects
             if (e.getPlayer().getActivePotionEffects().isEmpty()) {
-                e.getPlayer().sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>There are no effects to bottle!")));
+                e.getPlayer().sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>你身上没有任何药水效果!")));
                 return;
             }
 
@@ -61,16 +61,15 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
             }
 
             // Make a new potion
-            ItemStack item = PotionUtils.makePotion(MM.parse("<gradient:#6fe3e1:#53e6a6>Coruscating Potion</gradient>"),
+            ItemStack item = PotionUtils.makePotion(MM.parse("<gradient:#6fe3e1:#53e6a6>闪烁的药水</gradient>"),
                     Color.FUCHSIA, playerEffectsList);
             PotionMeta meta = (PotionMeta) item.getItemMeta();
 
             // Make a lore
             List<String> lore = new ArrayList<>();
             lore.add(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                    "<green>Created from a")));
-            lore.add(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                    "<gradient:#6274e7:#8752a3>Potion of Osmosis</gradient>")));
+                "<green>由<gradient:#6274e7:#8752a3>渗透药水</gradient><green>制成"
+            )));
 
             // Set the lore
             meta.setLore(lore);
@@ -98,7 +97,7 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
 
                 // Message
                 e.getPlayer().sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                        "<green>Successfully bottled your active effects into a potion!")));
+                        "<green>已将你身上的药水效果制作成药水瓶!")));
 
                 // Add new potion
                 e.getPlayer().getInventory().addItem(item);

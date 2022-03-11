@@ -73,62 +73,62 @@ public class Setup {
 
     public static void setupResearches(AlchimiaVitae p) {
         new Research(new NamespacedKey(p, "soul"), 131072,
-                "Breaking the cycle of life and death", 25)
+                "破坏轮回", 25)
                 .addItems(Items.CONDENSED_SOUL, Items.SOUL_COLLECTOR)
                 .register();
 
         new Research(new NamespacedKey(p, "magic_plants"), 131073,
-                "Two polar opposites", 30)
+                "两极对立", 30)
                 .addItems(Items.PLANT_INFUSION_CHAMBER, Items.GOOD_MAGIC_PLANT, Items.EVIL_MAGIC_PLANT)
                 .register();
 
         new Research(new NamespacedKey(p, "magic_essence"), 131074,
-                "Grinding it down", 10)
+                "需要打磨", 10)
                 .addItems(Items.GOOD_ESSENCE, Items.EVIL_ESSENCE)
                 .register();
 
         new Research(new NamespacedKey(p, "exp_crystals"), 131075,
-                "Crystalline experience", 21)
+                "晶化经验", 21)
                 .addItems(Items.EXP_CRYSTALLIZER, Items.EXP_CRYSTAL)
                 .register();
 
         new Research(new NamespacedKey(p, "magic_steel"), 131076,
-                "Mystical metals", 16)
+                "神秘金属", 16)
                 .addItems(Items.DARKSTEEL, Items.ILLUMIUM)
                 .register();
 
         new Research(new NamespacedKey(p, "divine_altar"), 131077,
-                "The long-lost cousin of the Ancient Altar", 45)
+                "古代祭坛的远房亲戚", 45)
                 .addItems(Items.DIVINE_ALTAR)
                 .register();
 
         new Research(new NamespacedKey(p, "metal_amalgamation"), 131078,
-                "An amalgamation of metallic substances", 19)
+                "金属物质的混合", 19)
                 .addItems(Items.MOLTEN_MYSTERY_METAL, Items.MYSTERY_METAL)
                 .register();
 
         new Research(new NamespacedKey(p, "ornate_cauldron"), 131079,
-                "A contraption to brew advanced potions", 35)
+                "酿造高级药水的装置", 35)
                 .addItems(Items.ORNATE_CAULDRON)
                 .register();
 
         new Research(new NamespacedKey(p, "potion_of_osmosis"), 131080,
-                "Osmosis and absorption", 30)
+                "渗透与吸收", 30)
                 .addItems(Items.POTION_OF_OSMOSIS)
                 .register();
 
         new Research(new NamespacedKey(p, "benevolent_brew"), 131081,
-                "A blessing from Gaia herself", 35)
+                "来自盖亚的祝福", 35)
                 .addItems(Items.BENEVOLENT_BREW)
                 .register();
 
         new Research(new NamespacedKey(p, "malevolent_concoction"), 131082,
-                "A substance with a slightly corrupted tinge", 35)
+                "带有轻微腐蚀的物质", 35)
                 .addItems(Items.MALEVOLENT_CONCOCTION)
                 .register();
 
         new Research(new NamespacedKey(p, "altar_of_infusion"), 131083,
-                "The ultimate altar to energize your items", 30)
+                "终极祭坛", 30)
                 .addItems(Items.ALTAR_OF_INFUSION)
                 .register();
     }

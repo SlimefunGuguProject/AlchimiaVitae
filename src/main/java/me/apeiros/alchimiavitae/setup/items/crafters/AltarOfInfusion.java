@@ -104,15 +104,15 @@ public class AltarOfInfusion extends CraftingBlock {
         boolean knockbackEnabled = cfg.getBoolean("options.infusions.infusion-knockback");
 
         // ItemStacks
-        CustomItemStack validInfuseAxe = new CustomItemStack(Material.DIAMOND_AXE, "&b&lA valid axe to infuse", "&aA gold, iron, diamond,", "&aor netherite axe will suffice");
-        CustomItemStack validInfuseBow = new CustomItemStack(Material.BOW, "&b&lA valid bow to infuse", "&aA bow or crossbow will suffice");
-        CustomItemStack validInfuseHoe = new CustomItemStack(Material.DIAMOND_HOE, "&b&lA valid hoe to infuse", "&aA gold, iron, diamond,", "&aor netherite hoe will suffice");
-        CustomItemStack validInfuseChestplate = new CustomItemStack(Material.DIAMOND_CHESTPLATE, "&b&lA valid chestplate to infuse", "&aA gold, iron, diamond,", "&aor netherite chestplate will suffice");
+        CustomItemStack validInfuseAxe = new CustomItemStack(Material.DIAMOND_AXE, "&b&l一把有效的斧头", "&a可以是金、铁、钻石、下界合金材质");
+        CustomItemStack validInfuseBow = new CustomItemStack(Material.BOW, "&b&l一把有效的弓", "&a可以是弓与弩");
+        CustomItemStack validInfuseHoe = new CustomItemStack(Material.DIAMOND_HOE, "&b&l一把有效的锄头", "a可以是金、铁、钻石、下界合金材质");
+        CustomItemStack validInfuseChestplate = new CustomItemStack(Material.DIAMOND_CHESTPLATE, "&b&l一件有效的胸甲", "a可以是金、铁、钻石、下界合金材质");
         /*
          **Useless atm**
          CustomItemStack validInfuseSword = new CustomItemStack(Material.DIAMOND_SWORD, "&b&lA valid sword to infuse", "&aA gold, iron, diamond,", "&aor netherite sword will suffice");
         */
-        CustomItemStack validInfuseRod = new CustomItemStack(Material.FISHING_ROD, "&b&lA valid fishing rod to infuse", "&aA normal fishing rod will suffice");
+        CustomItemStack validInfuseRod = new CustomItemStack(Material.FISHING_ROD, "&b&l一把有效的钓竿", "&a可以是钓竿");
         SlimefunItemStack item;
 
         // Register Infusions
@@ -123,11 +123,16 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.REDSTONE_BLOCK), SlimefunItems.WITHER_PROOF_OBSIDIAN, new ItemStack(Material.TNT)
             }, DESTRUCTIVE_CRITS);
 
-            item = new SlimefunItemStack("AV_DESTRUCTIVE_CRITS_INFUSION", Material.TNT, "&c&lDestructive Criticals",
-                    "&41/20 chance to give opponent Mining Fatigue III for 8 seconds on crit",
-                    "&41/5 chance to give opponent Slowness I for 15 seconds on crit",
-                    "&41/5 chance to give opponent Weakness I for 15 seconds on crit",
-                    "&4Deals 0-5 extra damage to opponent's armor on crit");
+            item = new SlimefunItemStack(
+                "AV_DESTRUCTIVE_CRITS_INFUSION",
+                Material.TNT,
+                "&c&l毁灭暴击",
+                "&4暴击时:",
+                "&4- 有 1/20 的几率使目标获得 8 秒挖掘疲劳 III 效果",
+                "&4- 有 1/5 的几率使目标获得 15 秒缓慢 III 效果",
+                "&4- 有 1/5 的几率使目标获得 15 秒虚弱 III 效果",
+                "&4- 对目标的护甲造成额外 0-5 点伤害"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_PICKAXE, new ItemStack(Material.STONECUTTER),
@@ -143,9 +148,14 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.PHANTOM_MEMBRANE), Items.CONDENSED_SOUL, new ItemStack(Material.PHANTOM_MEMBRANE)
             }, PHANTOM_CRITS);
 
-            item = new SlimefunItemStack("AV_PHANTOM_CRITS_INFUSION", Material.PHANTOM_MEMBRANE, "&bPhantom Criticals",
-                    "&a1/4 chance to deal (your attack damage to the power of 1.15",
-                    "&amultiplied by 5/8) extra damage on a crit, bypassing armor");
+            item = new SlimefunItemStack(
+                "AV_PHANTOM_CRITS_INFUSION",
+                Material.PHANTOM_MEMBRANE,
+                "&b幻影暴击",
+                "&a暴击时, 有 1/4 的几率造成额外伤害,无视护甲",
+                "&a该额外伤害为你的攻击伤害的1.15次方的0.625倍",
+                "&a即 伤害 ^ 1.15 * 0.625"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     new ItemStack(Material.PHANTOM_MEMBRANE), SlimefunItems.MAGICAL_GLASS, new ItemStack(Material.PHANTOM_MEMBRANE),
@@ -161,9 +171,15 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.SHULKER_BOX), SlimefunItems.INFUSED_ELYTRA, SlimefunItems.STEEL_THRUSTER
             }, TRUE_AIM);
 
-            item = new SlimefunItemStack("AV_TRUE_AIM_INFUSION", Material.SHULKER_SHELL, "&dTrue Aim",
-                    "&5Partially using the levitation charm", "&5Shulkers use to terminate their victims,",
-                    "&5a bow infused with this magic can fire", "&5arrows that are not affected by gravity");
+            item = new SlimefunItemStack(
+                "AV_TRUE_AIM_INFUSION",
+                Material.SHULKER_SHELL,
+                "&d自瞄",
+                "&5使用来自潜影壳的漂浮魔法",
+                "&5来处决目标",
+                "&5注入该魔法的弓将射出",
+                "&5不受重力影响的箭矢"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     SlimefunItems.SYNTHETIC_SHULKER_SHELL, SlimefunItems.INFUSED_MAGNET, SlimefunItems.STAFF_WIND,
@@ -179,9 +195,14 @@ public class AltarOfInfusion extends CraftingBlock {
                     SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.TALISMAN_TRAVELLER
             }, FORCEFUL);
 
-            item = new SlimefunItemStack("AV_FORCEFUL_INFUSION", Material.PISTON, "&2Forceful",
-                    "&aThis infusion uses mechanical", "&adevices and electromagnets to accelerate",
-                    "&aprojectiles to blistering speeds", "&aArrows will travel 2x farther and faster");
+            item = new SlimefunItemStack(
+                "AV_FORCEFUL_INFUSION",
+                Material.PISTON,
+                "&2强力",
+                "&a该注入魔法将使用机械设备与电磁铁",
+                "&a来加速弹射物",
+                "&a箭矢将获得2倍的速度与射程"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.STAFF_WIND,
@@ -197,10 +218,16 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.TNT), SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.LAVA_CRYSTAL
             }, VOLATILE);
 
-            item = new SlimefunItemStack("AV_VOLATILE_INFUSION", Material.FIRE_CHARGE, "&4&lVolatility",
-                    "&cThis extremely dangerous infusion creates", "&cspheres made of pure superheated lava,",
-                    "&cdelivering a mini-inferno to the target", "&41/7 chance to fire a large fireball",
-                    "&46/7 chance to fire a small fireball");
+            item = new SlimefunItemStack(
+                "AV_VOLATILE_INFUSION",
+                Material.FIRE_CHARGE,
+                "&4&l挥发",
+                "&c这种非常危险的注入魔法",
+                "&c可以生成由滚烫岩浆制成的球体",
+                "&c对目标释放迷你地狱",
+                "&4有 1/7 的几率发射一颗大火球",
+                "&4有 6/7 的几率发射一颗小火球"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     new ItemStack(Material.BLAZE_ROD), SlimefunItems.STAFF_FIRE, SlimefunItems.TALISMAN_FIRE,
@@ -216,9 +243,14 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), SlimefunItems.MEDICINE, SlimefunItems.MAGIC_SUGAR
             }, HEALING);
 
-            item = new SlimefunItemStack("AV_HEALING_INFUSION", Material.REDSTONE, "&cHealing",
-                    "&cThis infusion will heal hit entities", " &cand recover their &4health", "" +
-                    "&aHeals for the same amount that a bow shot would damage");
+            item = new SlimefunItemStack(
+                "AV_HEALING_INFUSION",
+                Material.REDSTONE,
+                "&c治疗",
+                "&c该注入魔法可以治疗目标",
+                "&c且不会造成伤害",
+                "&a治疗量与伤害相同"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     Items.BENEVOLENT_BREW, SlimefunItems.MEDICINE, SlimefunItems.VITAMINS,
@@ -234,9 +266,14 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.BONE_BLOCK), Items.GOOD_MAGIC_PLANT, new ItemStack(Material.GRINDSTONE)
             }, REPLANT);
 
-            item = new SlimefunItemStack("AV_AUTO_REPLANT_INFUSION", Material.WHEAT, "&aAutomatic Re-plant",
-                    "&2Any fully-grown crops broken",
-                    "&2with a hoe infused with this", "&2will &aautomatically &2be replanted");
+            item = new SlimefunItemStack(
+                "AV_AUTO_REPLANT_INFUSION",
+                Material.WHEAT,
+                "&a自动补种",
+                "&2使用任何注入该魔法的锄头",
+                "&2破坏完全生长的植物时",
+                "&2会&a自动&2补种"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     new ItemStack(Material.COMPOSTER), Items.GOOD_ESSENCE, new ItemStack(Material.WATER_BUCKET),
@@ -252,10 +289,15 @@ public class AltarOfInfusion extends CraftingBlock {
                     SlimefunItems.ESSENCE_OF_AFTERLIFE, SlimefunItems.ENERGIZED_CAPACITOR, SlimefunItems.ESSENCE_OF_AFTERLIFE
             }, TOTEM_STORAGE);
 
-            item = new SlimefunItemStack("AV_TOTEM_BATTERY_INFUSION", Material.TOTEM_OF_UNDYING, "&6&lTotem Battery",
-                    "&eA built-in pocket dimension that holds the energy", "&eof up to 8 Totems of Undying",
-                    "&6Store a Totem in this apparatus", "&6by &e&lShift-Right-Clicking &6with a Totem in the hand",
-                    "&6while the infused chestplate is worn");
+            item = new SlimefunItemStack(
+                "AV_TOTEM_BATTERY_INFUSION",
+                Material.TOTEM_OF_UNDYING,
+                "&6&l图腾电池",
+                "&e内置口袋维度",
+                "&e可容纳最多8个不死图腾",
+                "&6当装备该胸甲时，手持不死图腾并",
+                "&e&lShift+右键&6来存入不死图腾"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     SlimefunItems.NECROTIC_SKULL, Items.CONDENSED_SOUL, Items.BENEVOLENT_BREW,
@@ -271,9 +313,13 @@ public class AltarOfInfusion extends CraftingBlock {
                     new ItemStack(Material.SLIME_BALL), SlimefunItems.GRANDPAS_WALKING_STICK, SlimefunItems.TALISMAN_WHIRLWIND
             }, KNOCKBACK);
 
-            item = new SlimefunItemStack("AV_KNOCKBACK_INFUSION", Material.SLIME_BALL, "&aKnockback",
-                    "&2Entities pulled by this fishing rod",
-                    "&2will instead be pushed back");
+            item = new SlimefunItemStack(
+                "AV_KNOCKBACK_INFUSION",
+                Material.SLIME_BALL,
+                "&a击退",
+                "&2使用钓竿拉回的玩家",
+                "&2将会被击退"
+            );
 
             new SlimefunItem(Categories.INFUSIONS, item, RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
                     SlimefunItems.TALISMAN_WHIRLWIND, new ItemStack(Material.STICKY_PISTON), Items.EXP_CRYSTAL,
@@ -342,7 +388,7 @@ public class AltarOfInfusion extends CraftingBlock {
 
         // Invalid Infusion
         if (infusion == null) {
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>Invalid Infusion!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>无效的注入!")));
             return;
         }
 
@@ -358,12 +404,12 @@ public class AltarOfInfusion extends CraftingBlock {
                 // Valid item
             } else {
                 // Invalid item
-                p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You cannot infuse that tool!")));
+                p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>你不能注入该工具!")));
                 return;
             }
         } else {
             // Invalid item
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You cannot infuse blocks!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>你不能注入方块!")));
             return;
         }
 
@@ -371,7 +417,7 @@ public class AltarOfInfusion extends CraftingBlock {
         ItemStack tool = inv.getItemInSlot(TOOL_SLOT);
         if (tool == null || tool.getType().equals(Material.AIR)) {
             // No tool
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You cannot infuse air!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>你不能注入空气!")));
             return;
         }
 
@@ -392,7 +438,7 @@ public class AltarOfInfusion extends CraftingBlock {
                 container.has(REPLANT, PersistentDataType.BYTE) ||
                 container.has(KNOCKBACK, PersistentDataType.BYTE)) {
             // Tool is already infused
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You have already applied an Infusion to this item!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>该物品已注入魔法!")));
             return;
         }
 
@@ -410,33 +456,33 @@ public class AltarOfInfusion extends CraftingBlock {
             // Add lines to lore
             lore.add("");
             lore.add(BukkitComponentSerializer.legacy().serialize(
-                    MM.parse("<gray>Infusion:")));
+                    MM.parse("<gray>注入:")));
 
             // Add infusion name to lore
             if (infusion.equals(DESTRUCTIVE_CRITS)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <red><bold>Destructive Criticals")));
+                        MM.parse("<dark_gray>› <red><bold>毁灭暴击")));
             } else if (infusion.equals(PHANTOM_CRITS)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <aqua>Phantom Criticals")));
+                        MM.parse("<dark_gray>› <aqua>幻影暴击")));
             } else if (infusion.equals(TRUE_AIM)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <light_purple>True Aim")));
+                        MM.parse("<dark_gray>› <light_purple>自瞄")));
             } else if (infusion.equals(FORCEFUL)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <dark_green>Forceful")));
+                        MM.parse("<dark_gray>› <dark_green>强力")));
             } else if (infusion.equals(VOLATILE)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <dark_red><bold>Volatility")));
+                        MM.parse("<dark_gray>› <dark_red><bold>挥发")));
             } else if (infusion.equals(HEALING)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <red>Healing")));
+                        MM.parse("<dark_gray>› <red>治疗")));
             } else if (infusion.equals(REPLANT)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <green>Automatic Re-plant")));
+                        MM.parse("<dark_gray>› <green>自动补种")));
             } else if (infusion.equals(KNOCKBACK)) {
                 lore.add(BukkitComponentSerializer.legacy().serialize(
-                        MM.parse("<dark_gray>› <green>Knockback")));
+                        MM.parse("<dark_gray>› <green>击退")));
             }
 
             // Set lore and meta
@@ -452,18 +498,18 @@ public class AltarOfInfusion extends CraftingBlock {
             // Add lines to lore
             lore.add("");
             lore.add(BukkitComponentSerializer.legacy().serialize(
-                    MM.parse("<gray>Infusion:")));
+                    MM.parse("<gray>注入:")));
 
             // Add infusion name to lore
             lore.add(BukkitComponentSerializer.legacy().serialize(
-                    MM.parse("<dark_gray>› <gold><bold>Battery of Totems")));
+                    MM.parse("<dark_gray>› <gold><bold>图腾电池")));
 
             // Set lore and meta
             meta.setLore(lore);
             tool.setItemMeta(meta);
         } else {
             // Tool cannot be infused
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>You cannot apply this infusion to this item!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>该注入魔法不适用于当前物品!")));
             return;
         }
 
@@ -506,7 +552,7 @@ public class AltarOfInfusion extends CraftingBlock {
 
                     // Send message
                     p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                            "<gradient:#50fa75:#3dd2ff>Your item has been infused!</gradient>")));
+                            "<gradient:#50fa75:#3dd2ff>物品已注入魔法!</gradient>")));
                 }, 30);
             }, 30);
         }, 30);

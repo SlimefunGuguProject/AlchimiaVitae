@@ -75,7 +75,7 @@ public class DivineAltar extends CraftingBlock {
                     Items.DARKSTEEL, Items.MYSTERY_METAL, Items.ILLUMIUM,
                     null, SlimefunItems.DAMASCUS_STEEL_INGOT, null);
 
-            item = new SlimefunItemStack("AV_REINFORCED_ALLOY_INGOT", Material.IRON_INGOT, "&b&lReinforced Alloy Ingot");
+            item = new SlimefunItemStack("AV_REINFORCED_ALLOY_INGOT", Material.IRON_INGOT, "&b&l强化合金锭");
 
             if (useSlimefunItemCustomModelData) {
                 ItemMeta meta = item.getItemMeta();
@@ -97,7 +97,7 @@ public class DivineAltar extends CraftingBlock {
                     Items.DARKSTEEL, Items.MYSTERY_METAL, Items.ILLUMIUM,
                     null, SlimefunItems.STEEL_INGOT, null);
 
-            item = new SlimefunItemStack("AV_HARDENED_METAL_INGOT", Material.IRON_INGOT, "&b&lHardened Metal");
+            item = new SlimefunItemStack("AV_HARDENED_METAL_INGOT", Material.IRON_INGOT, "&b&l硬化金属");
 
             if (useSlimefunItemCustomModelData) {
                 ItemMeta meta = item.getItemMeta();
@@ -119,7 +119,7 @@ public class DivineAltar extends CraftingBlock {
                     Items.DARKSTEEL, Items.MYSTERY_METAL, Items.ILLUMIUM,
                     null, SlimefunItems.CARBON, null);
 
-            item = new SlimefunItemStack("AV_STEEL_INGOT", Material.IRON_INGOT, "&bSteel Ingot");
+            item = new SlimefunItemStack("AV_STEEL_INGOT", Material.IRON_INGOT, "&b钢锭");
 
             if (useSlimefunItemCustomModelData) {
                 ItemMeta meta = item.getItemMeta();
@@ -141,7 +141,7 @@ public class DivineAltar extends CraftingBlock {
                     Items.DARKSTEEL, Items.MYSTERY_METAL, Items.ILLUMIUM,
                     null, SlimefunItems.COMPRESSED_CARBON, null);
 
-            item = new SlimefunItemStack("AV_DAMASCUS_STEEL_INGOT", Material.IRON_INGOT, "&bDamascus Steel Ingot");
+            item = new SlimefunItemStack("AV_DAMASCUS_STEEL_INGOT", Material.IRON_INGOT, "&b大马士革钢锭");
 
             if (useSlimefunItemCustomModelData) {
                 ItemMeta meta = item.getItemMeta();
@@ -163,7 +163,7 @@ public class DivineAltar extends CraftingBlock {
                     new ItemStack(Material.OAK_LEAVES), new ItemStack(Material.COAL_BLOCK), new ItemStack(Material.KELP),
                     new ItemStack(Material.COAL), new ItemStack(Material.ROTTEN_FLESH), new ItemStack(Material.COAL));
 
-            item = new SlimefunItemStack("AV_COMPRESSED_CARBON", HeadTexture.COMPRESSED_CARBON, "&cCompressed Carbon");
+            item = new SlimefunItemStack("AV_COMPRESSED_CARBON", HeadTexture.COMPRESSED_CARBON, "&c压缩碳");
 
             if (useSlimefunItemCustomModelData) {
                 ItemMeta meta = item.getItemMeta();
@@ -271,14 +271,14 @@ public class DivineAltar extends CraftingBlock {
 
         // Invalid recipe
         if (item == null) {
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>That recipe is invalid!")));
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>Please try again.")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>无效的配方!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>请重试.")));
             return;
         }
 
         // Check for space
         if (!inv.fits(item, OUT_SLOTS)) {
-            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>There is not enough space in the output slots!")));
+            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>输出空间不足!")));
             return;
         }
 
@@ -316,7 +316,7 @@ public class DivineAltar extends CraftingBlock {
 
                         // Send message
                         p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(
-                                "<gradient:#50fa75:#3dd2ff>Successful craft!</gradient>")));
+                                "<gradient:#50fa75:#3dd2ff>成功合成!</gradient>")));
 
                         // Output the item(s)
                         inv.pushItem(finalItem.clone(), OUT_SLOTS);
