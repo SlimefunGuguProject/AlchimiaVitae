@@ -1,72 +1,85 @@
-# Alchimia Vitae
-Slimefun addon that adds various magic, alchemy, and herbalism techniques and aspects to the game
+# AlchimiaVitae - 炼金术自传
 
-My entry to the **2021 Slimefun Addon Jam**
+粘液科技附属，添加了一些魔法，炼金，草药物品。
 
-Download [here](https://thebusybiscuit.github.io/builds/Apeiros-46B/AlchimiaVitae/master/) 
+该附属为作者的**2021 Slimefun Addon Jam**参赛作品。
 
-![Build status](https://thebusybiscuit.github.io/builds/Apeiros-46B/AlchimiaVitae/master/badge.svg)
+## 下载
 
-### Features:
-- Plants of Dark and Light Magic
-  - Used to brew potions
-  - Used to create Darksteel and Illumium, magical steel ingots
-  - Created by infusing Oak Saplings with either Souls or Magical Lumps
-- Divine Altar
-  - Used for rituals to craft more advanced items
-  - Used to change metals into other metals
-  - Used to change various forms of life into pure carbon
-- Ornate Cauldron
-  - Used to create powerful potions
-    - Benevolent Brew and Malevolent Concoction
-- Altar of Infusion
-  - Allows you to infuse tools and weapons with powerful effects called Infusions
-  - Infusions are not compatible with each other, you must choose wisely
-- Potion of Osmosis
-  - Absorbs your effects when you drink it
-  - Brewed using the Ornate Cauldron
+**自动更新**: 汉化版构建#2及以后版本包含自动更新功能，默认开启。
+
+点击这里下载 AlchimiaVitae: [下载 AlchimiaVitae](https://builds.guizhanss.net/ybw0014/AlchimiaVitae/master)
+
+<p align="center">
+  <a href="https://github.com/ybw0014/AlchimiaVitae/actions/workflows/maven.yml">
+    <img src="https://github.com/ybw0014/AlchimiaVitae/actions/workflows/maven.yml/badge.svg" alt="Java CI"/>
+  </a>
+  <a href="https://builds.guizhanss.net/ybw0014/AlchimiaVitae/master">
+    <img src="https://builds.guizhanss.net/f/ybw0014/AlchimiaVitae/master/badge.svg" alt="Build status"/>
+  </a>
+</p>
+
+### 特性:
+
+- 光与暗魔法植物
+  - 用于酿造药水
+  - 用于制造暗钢锭，光明锭，以及神秘金属锭
+  - 使用灵魂或魔法精华注入橡树树苗获得
+- 神圣祭坛
+  - 用于制造高级物品
+  - 可以制作金属
+  - 可以将不同种类的生命变成压缩碳
+- 华丽炼药锅
+  - 用于酿造强力的药水
+    - 仁慈酿造与恶毒混合物
+- 注入祭坛
+  - 可以向工具、武器、防具注入强力的魔法
+  - 每个装备仅能选择一种注入魔法，不能同时添加多种注入魔法
+- 渗透药水
+  - 可以吸收你身上所有的药水效果
+  - 使用华丽炼药锅酿造
 
 
-### List of infusions:
-- Destructive Criticals
-  - Applicable items: Axe
-  - Effects:
-    - 1/20 chance to give opponent 8 second Mining Fatigue III on crit
-    - 1/5 chance to give opponent 15 second Slowness I on crit
-    - 1/5 chance to give opponent 15 second Weakness I on crit
-    - Deals 0-5 extra damage to opponent's armor 
-- Phantom Criticals
-  - Applicable items: Axe
-  - Effects:
-    - 1/4 chance to partially bypass armor and do the attack's damage raised to the power of 1.15 multiplied by 5/8 on a crit
-- True Aim
-  - Applicable items: Bow, Crossbow
-  - Effects:
-    - Arrows fly straight with no gravity
-- Forceful
-  - Applicable items: Bow, Crossbow
-  - Effects:
-    - Arrows fly 2x farther and faster
-- Healing
-  - Applicable items: Bow, Crossbow
-  - Effects:
-    - Arrows heal instead of doing damage
-- Volatile
-  - Applicable items: Bow, Crossbow
-  - Effects:
-    - 1/7 chance to shoot a large fireball that does no block damage and does not create fire instead of an arrow
-    - If a large fireball is not fired, a small fireball will be fired instead that does no block damage and does not create fire
-- Automatic Replant
-  - Applicable items: Hoe
-  - Effects:
-    - If the harvested crop is fully grown, it will be automatically replanted without using an extra seed
-- Battery of Totems
-  - Applicable items: Chestplate
-  - Effects:
-    - Allows you to store up to 8 Totems of Undying inside a pocket dimension, resurrecting you upon death, but then being consumed.
-    - Totems are added to this battery by shift-rightclicking with one while a chestplate infused with this Infusion is worn
-- Knockback
-  - Applicable items: Fishing Rod
-  - Effects:
-    - Whenever an entity is reeled by a fishing rod infused with Knockback, it gets pushed away instead of being pulled.
-    - The fishing hook from the infused fishing rod flies 2x farther.
+### 注入列表:
+- 毁灭暴击
+  - 适用装备: 斧
+  - 效果: 暴击时，
+    - 有 1/20 的几率使目标获得 8 秒挖掘疲劳 III 效果
+    - 有 1/5 的几率使目标获得 15 秒缓慢 I 效果
+    - 有 1/5 的几率使目标获得 15 秒虚弱 I 效果
+    - 对目标的护甲造成额外 0-5 点伤害
+- 幻影暴击
+  - 适用装备: 斧
+  - 效果:
+    - 暴击时, 有 1/4 的几率造成额外伤害,无视护甲。该额外伤害为你的攻击伤害的1.15次方的0.625倍。
+- 自瞄
+  - 适用装备: 弓，弩
+  - 效果:
+    - 箭矢不受重力影响
+- 强力
+  - 适用装备: 弓，弩
+  - 效果:
+    - 箭矢拥有2倍射程与速度
+- 治疗
+  - 适用装备: 弓，弩
+  - 效果:
+    - 将治疗目标而不会造成伤害
+- 挥发
+  - 适用装备: 弓，弩
+  - 效果:
+    - 有 1/7 的几率射出一个大火球取代箭矢，不会破坏地形，不会让方块起火
+    - 如果没有射出大火球，则会射出一个小火球，不会破坏地形，不会让方块起火
+- 自动补种
+  - 适用装备: 锄
+  - 效果:
+    - 当收割完全生长的作物时，会自动补种，不会消耗种子
+- 图腾电池
+  - 适用装备: 胸甲
+  - 效果:
+    - 允许存储最多8个不死图腾，在濒死时使用并消耗
+    - 手持不死图腾 Shift+右键 来添加图腾
+- 击退
+  - 适用装备: 钓竿
+  - 效果:
+    - 当使用注入该魔法的钓竿拉回玩家时，将会击退玩家
+    - 该注入钓竿的射程为普通钓竿的2倍
