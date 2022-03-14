@@ -193,8 +193,12 @@ public class Items {
         });
     }
 
-    public static final SlimefunItemStack BENEVOLENT_BREW = PotionUtils.makePotion(MM.parse(
-            "<gradient:#2ddae0:#31f876>仁慈酿造</gradient>"), Color.LIME, potEffectsMap);
+    public static final SlimefunItemStack BENEVOLENT_BREW = PotionUtils.makePotion(
+        "AV_BENEVOLENT_BREW_POTION",
+        MM.parse("<gradient:#2ddae0:#31f876>仁慈酿造</gradient>"),
+        Color.LIME,
+        potEffectsMap
+    );
 
     static {
         // Clear the map from the previous usage
@@ -223,8 +227,12 @@ public class Items {
         });
     }
 
-    public static final SlimefunItemStack MALEVOLENT_CONCOCTION = PotionUtils.makeSplashPotion(MM.parse(
-            "<gradient:#ff5555:#ffa012>恶毒混合物</gradient>"), Color.MAROON, potEffectsMap);
+    public static final SlimefunItemStack MALEVOLENT_CONCOCTION = PotionUtils.makeSplashPotion(
+        "AV_MALEVOLENT_CONCOCTION_SPLASH_POTION",
+        MM.parse("<gradient:#ff5555:#ffa012>恶毒混合物</gradient>"),
+        Color.MAROON,
+        potEffectsMap
+    );
 
     public static final SlimefunItemStack ALTAR_OF_INFUSION = new SlimefunItemStack("AV_ALTAR_OF_INFUSION",
             Material.LODESTONE, BukkitComponentSerializer.legacy().serialize

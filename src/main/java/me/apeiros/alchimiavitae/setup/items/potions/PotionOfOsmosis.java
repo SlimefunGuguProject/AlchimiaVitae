@@ -61,8 +61,12 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
             }
 
             // Make a new potion
-            ItemStack item = PotionUtils.makePotion(MM.parse("<gradient:#6fe3e1:#53e6a6>闪烁的药水</gradient>"),
-                    Color.FUCHSIA, playerEffectsList);
+            ItemStack item = PotionUtils.makePotion(
+                "AV_CORUSCATING_POTION_POTION",
+                MM.parse("<gradient:#6fe3e1:#53e6a6>闪烁的药水</gradient>"),
+                Color.FUCHSIA,
+                playerEffectsList
+            );
             PotionMeta meta = (PotionMeta) item.getItemMeta();
 
             // Make a lore
