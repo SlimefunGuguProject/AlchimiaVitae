@@ -73,7 +73,7 @@ public class Items {
 
     public static final SlimefunItemStack EVIL_MAGIC_PLANT = new SlimefunItemStack("AV_EVIL_MAGIC_PLANT",
             Material.OAK_SAPLING, BukkitComponentSerializer.legacy().serialize
-            (MM.parse("<gradient:#ff5555:#ffa012>按魔法植物</gradient>")),
+            (MM.parse("<gradient:#ff5555:#ffa012>暗魔法植物</gradient>")),
             "&7暗魔法 I", "&c在它的木质中封印了", "&c无数的暗魔法...");
 
     static {
