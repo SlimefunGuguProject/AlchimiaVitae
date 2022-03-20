@@ -2,7 +2,7 @@ package me.apeiros.alchimiavitae.listeners.infusion;
 
 import me.apeiros.alchimiavitae.AlchimiaVitae;
 import me.apeiros.alchimiavitae.setup.items.crafters.AltarOfInfusion;
-import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
+import me.apeiros.alchimiavitae.utils.Utils;
 import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -20,8 +20,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import static me.apeiros.alchimiavitae.AlchimiaVitae.MM;
 
 public class InfusionTotemListener implements Listener {
 
@@ -53,7 +51,7 @@ public class InfusionTotemListener implements Listener {
                         if (e.getItem().isSimilar(new ItemStack(Material.TOTEM_OF_UNDYING))) {
                             // Check if there are already 8 totems
                             if (totemsStored >= 8) {
-                                p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<red>不死图腾已满!")));
+                                p.sendMessage(Utils.parseLegacy("<red>不死图腾已满!"));
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
                                 return;
                             }
@@ -67,8 +65,8 @@ public class InfusionTotemListener implements Listener {
                             p.getInventory().getChestplate().setItemMeta(meta);
 
                             // Send a message to the player
-                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse("<green>不死图腾已添加到图腾电池中.")));
-                            p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾.")));
+                            p.sendMessage(Utils.parseLegacy("<green>不死图腾已添加到图腾电池中."));
+                            p.sendMessage(Utils.parseLegacy(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
 
                             // Play effects
                             p.getWorld().playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_GOLD, 1, 1);
@@ -79,7 +77,7 @@ public class InfusionTotemListener implements Listener {
                             p.getWorld().spawnParticle(Particle.END_ROD, e.getPlayer().getLocation(), 200, 1, 2, 1);
                         }
                     } else {
-                        p.sendMessage(BukkitComponentSerializer.legacy().serialize(MM.parse(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾.")));
+                        p.sendMessage(Utils.parseLegacy(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_AMBIENT, 1F, 1);
                     }
                 }
@@ -90,8 +88,7 @@ public class InfusionTotemListener implements Listener {
     // Death event
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent e) {
-        if (!e.getCause().equals(EntityDamageEvent.DamageCause.VOID) && e.getEntity() instanceof Player) {
-            Player p = (Player) e.getEntity();
+        if (!e.getCause().equals(EntityDamageEvent.DamageCause.VOID) && e.getEntity() instanceof Player p) {
 
             if (p.getInventory().getChestplate() != null) {
                 ItemMeta meta = p.getInventory().getChestplate().getItemMeta();
