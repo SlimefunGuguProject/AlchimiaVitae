@@ -64,7 +64,7 @@ public class Utils {
     }
 
     public static String parseLegacy(String s) {
-        return LCS.serialize(parse(s));
+        return ChatColors.color(LCS.serialize(parse(s)));
     }
 
     public static String parseLegacy(Component c) {

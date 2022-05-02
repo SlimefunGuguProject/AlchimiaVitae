@@ -228,7 +228,7 @@ public class Items {
         "AV_POTION_OF_OSMOSIS",
         Material.DRAGON_BREATH,
         Utils.parseLegacy("<gradient:#6274e7:#8752a3>渗透药水</gradient>"),
-        "&e右键点击6吸收你身上的所有药水效果",
+        "&e右键点击&6吸收你身上的所有药水效果",
         "&6并将它们储存在药水瓶中"
     );
 
