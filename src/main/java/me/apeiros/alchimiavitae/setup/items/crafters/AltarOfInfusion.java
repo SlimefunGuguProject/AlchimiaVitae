@@ -10,11 +10,10 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.apeiros.alchimiavitae.AlchimiaVitae;
 import me.apeiros.alchimiavitae.setup.Items;
-import me.apeiros.alchimiavitae.utils.Utils;
 import me.apeiros.alchimiavitae.utils.InfusionMap;
+import me.apeiros.alchimiavitae.utils.Utils;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -148,9 +147,7 @@ public class AltarOfInfusion extends CraftingBlock {
                 "AV_PHANTOM_CRITS_INFUSION",
                 Material.PHANTOM_MEMBRANE,
                 "&b幻影暴击",
-                "&a暴击时, 有 1/4 的几率造成额外伤害,无视护甲",
-                "&a该额外伤害为你的攻击伤害的1.15次方的0.625倍",
-                "&a即 伤害 ^ 1.15 * 0.625"
+                "&a暴击时,有小概率造成额外伤害,无视护甲"
             );
 
             new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
@@ -197,7 +194,7 @@ public class AltarOfInfusion extends CraftingBlock {
                 "&2强力",
                 "&a该注入魔法将使用机械设备与电磁铁",
                 "&a来加速弹射物",
-                "&a箭矢将获得2倍的速度与射程"
+                "&a箭矢将获得2倍射程与额外伤害"
             );
 
             new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
@@ -384,7 +381,7 @@ public class AltarOfInfusion extends CraftingBlock {
 
         // Invalid Infusion
         if (infusion == null) {
-            p.sendMessage(Utils.parseLegacy("<red>无效的注入!"));
+            p.sendMessage(Utils.legacySerialize("<red>无效的注入!"));
             return;
         }
 
@@ -400,12 +397,12 @@ public class AltarOfInfusion extends CraftingBlock {
                 // Valid item
             } else {
                 // Invalid item
-                p.sendMessage(Utils.parseLegacy("<red>你不能注入该工具!"));
+                p.sendMessage(Utils.legacySerialize("<red>你不能注入该工具!"));
                 return;
             }
         } else {
             // Invalid item
-            p.sendMessage(Utils.parseLegacy("<red>你不能注入方块!"));
+            p.sendMessage(Utils.legacySerialize("<red>你不能注入方块!"));
             return;
         }
 
@@ -413,7 +410,7 @@ public class AltarOfInfusion extends CraftingBlock {
         ItemStack tool = inv.getItemInSlot(TOOL_SLOT);
         if (tool == null || tool.getType().equals(Material.AIR)) {
             // No tool
-            p.sendMessage(Utils.parseLegacy("<red>你不能注入空气!"));
+            p.sendMessage(Utils.legacySerialize("<red>你不能注入空气!"));
             return;
         }
 
@@ -434,7 +431,7 @@ public class AltarOfInfusion extends CraftingBlock {
                 container.has(REPLANT, PersistentDataType.BYTE) ||
                 container.has(KNOCKBACK, PersistentDataType.BYTE)) {
             // Tool is already infused
-            p.sendMessage(Utils.parseLegacy("<red>该物品已注入魔法!"));
+            p.sendMessage(Utils.legacySerialize("<red>该物品已注入魔法!"));
             return;
         }
 
@@ -448,25 +445,25 @@ public class AltarOfInfusion extends CraftingBlock {
 
             // Add lines to lore
             lore.add("");
-            lore.add(Utils.parseLegacy("<gray>注入:"));
+            lore.add(Utils.legacySerialize("<gray>注入:"));
 
             // Add infusion name to lore
             if (infusion.equals(DESTRUCTIVE_CRITS)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <red><bold>毁灭暴击"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <red><bold>毁灭暴击"));
             } else if (infusion.equals(PHANTOM_CRITS)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <aqua>幻影暴击"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <aqua>幻影暴击"));
             } else if (infusion.equals(TRUE_AIM)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <light_purple>自瞄"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <light_purple>自瞄"));
             } else if (infusion.equals(FORCEFUL)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <dark_green>强力"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <dark_green>强力"));
             } else if (infusion.equals(VOLATILE)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <dark_red><bold>挥发"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <dark_red><bold>挥发"));
             } else if (infusion.equals(HEALING)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <red>治疗"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <red>治疗"));
             } else if (infusion.equals(REPLANT)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <green>自动补种"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <green>自动补种"));
             } else if (infusion.equals(KNOCKBACK)) {
-                lore.add(Utils.parseLegacy("<dark_gray>› <green>击退"));
+                lore.add(Utils.legacySerialize("<dark_gray>› <green>击退"));
             }
 
             // Set lore and meta
@@ -481,17 +478,17 @@ public class AltarOfInfusion extends CraftingBlock {
 
             // Add lines to lore
             lore.add("");
-            lore.add(Utils.parseLegacy("<gray>注入:"));
+            lore.add(Utils.legacySerialize("<gray>注入:"));
 
             // Add infusion name to lore
-            lore.add(Utils.parseLegacy("<dark_gray>› <gold><bold>图腾电池"));
+            lore.add(Utils.legacySerialize("<dark_gray>› <gold><bold>图腾电池"));
 
             // Set lore and meta
             meta.setLore(lore);
             tool.setItemMeta(meta);
         } else {
             // Tool cannot be infused
-            p.sendMessage(Utils.parseLegacy("<red>该注入魔法不适用于当前物品!"));
+            p.sendMessage(Utils.legacySerialize("<red>该注入魔法不适用于当前物品!"));
             return;
         }
 
@@ -533,7 +530,7 @@ public class AltarOfInfusion extends CraftingBlock {
                     b.getWorld().spawnParticle(Particle.PORTAL, b.getLocation().add(0.5, 0.5, 0.5), 300, 2, 2, 2);
 
                     // Send message
-                    p.sendMessage(Utils.parseLegacy("<gradient:#50fa75:#3dd2ff>物品已注入魔法!</gradient>"));
+                    p.sendMessage(Utils.legacySerialize("<gradient:#50fa75:#3dd2ff>物品已注入魔法!</gradient>"));
                 }, 30);
             }, 30);
         }, 30);

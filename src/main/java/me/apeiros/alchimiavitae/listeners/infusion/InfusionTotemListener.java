@@ -51,7 +51,7 @@ public class InfusionTotemListener implements Listener {
                         if (e.getItem().isSimilar(new ItemStack(Material.TOTEM_OF_UNDYING))) {
                             // Check if there are already 8 totems
                             if (totemsStored >= 8) {
-                                p.sendMessage(Utils.parseLegacy("<red>不死图腾已满!"));
+                                p.sendMessage(Utils.legacySerialize("<red>不死图腾已满!"));
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
                                 return;
                             }
@@ -65,8 +65,8 @@ public class InfusionTotemListener implements Listener {
                             p.getInventory().getChestplate().setItemMeta(meta);
 
                             // Send a message to the player
-                            p.sendMessage(Utils.parseLegacy("<green>不死图腾已添加到图腾电池中."));
-                            p.sendMessage(Utils.parseLegacy(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
+                            p.sendMessage(Utils.legacySerialize("<green>不死图腾已添加到图腾电池中."));
+                            p.sendMessage(Utils.legacySerialize(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
 
                             // Play effects
                             p.getWorld().playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_GOLD, 1, 1);
@@ -77,7 +77,7 @@ public class InfusionTotemListener implements Listener {
                             p.getWorld().spawnParticle(Particle.END_ROD, e.getPlayer().getLocation(), 200, 1, 2, 1);
                         }
                     } else {
-                        p.sendMessage(Utils.parseLegacy(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
+                        p.sendMessage(Utils.legacySerialize(totemsStored == 1 ? "<green>已存储 1 个图腾." : "<green>已存储 " + totemsStored + " 个图腾."));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_AMBIENT, 1F, 1);
                     }
                 }
@@ -124,6 +124,17 @@ public class InfusionTotemListener implements Listener {
 
                                 // Custom effects
                                 p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 0.5F, 1F);
+
+                                // Send a message to the player with totem amount
+                                if (totemsStored >= 4) {
+                                    p.sendMessage(Utils.legacySerialize("<green>图腾电池中剩余" + totemsStored + "个图腾."));
+                                } else if (totemsStored >= 2) {
+                                    p.sendMessage(Utils.legacySerialize("<yellow>图腾电池中剩余" + totemsStored + "个图腾."));
+                                } else if (totemsStored == 1) {
+                                    p.sendMessage(Utils.legacySerialize("<red>图腾电池中剩余1个图腾."));
+                                } else {
+                                    p.sendMessage(Utils.legacySerialize("<dark_red>图腾电池中没有图腾!"));
+                                }
                             }
                         }
                     }

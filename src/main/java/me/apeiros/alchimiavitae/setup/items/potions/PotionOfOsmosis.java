@@ -6,7 +6,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.apeiros.alchimiavitae.AlchimiaVitae;
 import me.apeiros.alchimiavitae.setup.Items;
 import me.apeiros.alchimiavitae.utils.Utils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -44,7 +43,7 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
 
             // If player has no effects
             if (p.getActivePotionEffects().isEmpty()) {
-                p.sendMessage(Utils.parseLegacy("<red>你身上没有任何药水效果!"));
+                p.sendMessage(Utils.legacySerialize("<red>你身上没有任何药水效果!"));
                 return;
             }
 
@@ -59,7 +58,7 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
             // Make a new potion
             ItemStack newPotion = Utils.makePotion(
                 "AV_CORUSCATING_POTION_POTION",
-                Utils.parse("<gradient:#6fe3e1:#53e6a6>闪烁的药水</gradient>"),
+                Utils.legacySerialize("<gradient:#6fe3e1:#53e6a6>闪烁的药水</gradient>"),
                 Color.FUCHSIA,
                 playerEffectsList
             );
@@ -67,7 +66,7 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
 
             // Make a lore
             List<String> lore = new ArrayList<>();
-            lore.add(Utils.parseLegacy("<green>由<gradient:#6274e7:#8752a3>渗透药水</gradient><green>制成"));
+            lore.add(Utils.legacySerialize("<green>由<gradient:#6274e7:#8752a3>渗透药水</gradient><green>制成"));
 
             // Set the lore
             meta.setLore(lore);
@@ -94,7 +93,7 @@ public class PotionOfOsmosis extends SimpleSlimefunItem<ItemUseHandler> {
                     p.getWorld().spawnParticle(Particle.END_ROD, p.getLocation(), 60, 1, 1, 1);
 
                     // Message
-                    p.sendMessage(Utils.parseLegacy("<green>已将你身上的药水效果制作成药水瓶!"));
+                    p.sendMessage(Utils.legacySerialize("<green>已将你身上的药水效果制作成药水瓶!"));
 
                     // Add new potion
                     p.getInventory().addItem(newPotion);

@@ -266,14 +266,14 @@ public class DivineAltar extends CraftingBlock {
 
         // Invalid recipe
         if (item == null) {
-            p.sendMessage(Utils.parseLegacy("<red>无效的配方!"));
-            p.sendMessage(Utils.parseLegacy("<red>请重试."));
+            p.sendMessage(Utils.legacySerialize("<red>无效的配方!"));
+            p.sendMessage(Utils.legacySerialize("<red>请重试."));
             return;
         }
 
         // Check for space
         if (!inv.fits(item, OUT_SLOTS)) {
-            p.sendMessage(Utils.parseLegacy("<red>输出空间不足!"));
+            p.sendMessage(Utils.legacySerialize("<red>输出空间不足!"));
             return;
         }
 
@@ -310,7 +310,7 @@ public class DivineAltar extends CraftingBlock {
                         b.getWorld().spawnParticle(Particle.REVERSE_PORTAL, b.getLocation().add(0.5, 0.5, 0.5), 300, 2, 2, 2);
 
                         // Send message
-                        p.sendMessage(Utils.parseLegacy("<gradient:#50fa75:#3dd2ff>成功合成!</gradient>"));
+                        p.sendMessage(Utils.legacySerialize("<gradient:#50fa75:#3dd2ff>成功合成!</gradient>"));
 
                         // Output the item(s)
                         inv.pushItem(finalItem.clone(), OUT_SLOTS);

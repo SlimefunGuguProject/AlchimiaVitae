@@ -34,7 +34,7 @@ public class SoulCollector extends SlimefunItem {
             if (e.getEntity() instanceof Player) {
                 // The Soul Collector cannot be used on players
                 e.setCancelled(true);
-                p.sendMessage(Utils.parseLegacy("<red>你不能对玩家使用灵魂收集者!"));
+                p.sendMessage(Utils.legacySerialize("<red>你不能对玩家使用灵魂收集者!"));
                 p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 1);
             }
         };
