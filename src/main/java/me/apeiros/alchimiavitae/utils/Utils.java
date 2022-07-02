@@ -78,7 +78,7 @@ public class Utils {
         ItemStack potion = new ItemStack(Material.POTION);
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
 
-        potionMeta.setDisplayName(name);
+        potionMeta.setDisplayName(ChatColors.color(name));
         potionMeta.setColor(color);
 
         for (Map.Entry<PotionEffectType, int[]> e : effects.entrySet()) {
@@ -94,7 +94,7 @@ public class Utils {
         ItemStack potion = new ItemStack(Material.POTION);
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
 
-        potionMeta.setDisplayName(name);
+        potionMeta.setDisplayName(ChatColors.color(name));
         potionMeta.setColor(color);
 
         for (PotionEffect e : effects) {
@@ -110,7 +110,7 @@ public class Utils {
         ItemStack potion = new ItemStack(Material.SPLASH_POTION);
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
 
-        potionMeta.setDisplayName(name);
+        potionMeta.setDisplayName(ChatColors.color(name));
         potionMeta.setColor(color);
 
         for (Map.Entry<PotionEffectType, int[]> e : effects.entrySet()) {
