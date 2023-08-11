@@ -1,571 +1,593 @@
 package me.apeiros.alchimiavitae.setup.items.crafters;
 
-import io.github.mooy1.infinitylib.core.AbstractAddon;
-import io.github.mooy1.infinitylib.machines.CraftingBlock;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.apeiros.alchimiavitae.AlchimiaVitae;
-import me.apeiros.alchimiavitae.setup.Items;
-import me.apeiros.alchimiavitae.utils.InfusionMap;
-import me.apeiros.alchimiavitae.utils.Utils;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import org.bukkit.Bukkit;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import io.github.mooy1.infinitylib.core.AbstractAddon;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
-public class AltarOfInfusion extends CraftingBlock {
+import me.apeiros.alchimiavitae.AlchimiaUtils;
+import me.apeiros.alchimiavitae.AlchimiaVitae;
+import me.apeiros.alchimiavitae.setup.AlchimiaItems;
+import me.apeiros.alchimiavitae.setup.items.crafters.AltarOfInfusion.Infusion;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
-    // Keys
-    public static final NamespacedKey DESTRUCTIVE_CRITS = AbstractAddon.createKey("infusion_destructivecrits");
-    public static final NamespacedKey PHANTOM_CRITS = AbstractAddon.createKey("infusion_phantomcrits");
-    public static final NamespacedKey TRUE_AIM = AbstractAddon.createKey("infusion_trueaim");
-    public static final NamespacedKey FORCEFUL = AbstractAddon.createKey("infusion_forceful");
-    public static final NamespacedKey VOLATILE = AbstractAddon.createKey("infusion_volatile");
-    public static final NamespacedKey HEALING = AbstractAddon.createKey("infusion_healing");
-    public static final NamespacedKey REPLANT = AbstractAddon.createKey("infusion_autoreplant");
-    public static final NamespacedKey TOTEM_STORAGE = AbstractAddon.createKey("infusion_totemstorage");
-    public static final NamespacedKey KNOCKBACK = AbstractAddon.createKey("infusion_knockback");
+public class AltarOfInfusion extends AbstractCrafter<Infusion> {
 
-    // Tool Utils.ItemGroups
-    private static final List<Material> VALID_AXE = Arrays.asList(Material.GOLDEN_AXE, Material.IRON_AXE, Material.DIAMOND_AXE, Material.NETHERITE_AXE);
-    private static final List<Material> VALID_BOW = Arrays.asList(Material.BOW, Material.CROSSBOW);
-    private static final List<Material> VALID_HOE = Arrays.asList(Material.GOLDEN_HOE, Material.IRON_HOE, Material.DIAMOND_HOE, Material.NETHERITE_HOE);
-    private static final List<Material> VALID_CHESTPLATE = Arrays.asList(Material.GOLDEN_CHESTPLATE, Material.IRON_CHESTPLATE, Material.DIAMOND_CHESTPLATE, Material.NETHERITE_CHESTPLATE);
-    private static final List<Material> VALID_FISHING_ROD = Collections.singletonList(Material.FISHING_ROD);
+    // Slot where the tool is placed
+    private static final int TOOL_SLOT = 10;
 
-    // Slots
-    private static final int[] IN_SLOTS = {10, 11, 12, 19, 20, 21, 28, 29, 30};
-    private static final int[] IN_SLOTS_EXCLUDING_MID = {10, 11, 12, 19, 21, 28, 29, 30};
-
-    private static final int[] IN_BG = {0, 1, 2, 3, 4, 9, 13, 18, 22, 27, 31, 36, 37, 38, 39, 40};
-    private static final int[] CRAFT_BG = {5, 6, 7, 8, 14, 17, 23, 26, 32, 35, 41, 42, 43, 44};
-
-    private static final int[] CRAFT_BUTTON = {15, 16, 24, 25, 33, 34};
-
-    private static final int TOOL_SLOT = 20;
-
-    // Recipes
-    private static final InfusionMap recipes = new InfusionMap();
-
-    // Constructor
-    public AltarOfInfusion(ItemGroup c) {
-
-        super(c, Items.ALTAR_OF_INFUSION, Utils.RecipeTypes.DIVINE_ALTAR_TYPE, new ItemStack[]{
-                Items.EXP_CRYSTAL, SlimefunItems.WITHER_PROOF_GLASS, Items.EXP_CRYSTAL,
+    public AltarOfInfusion(ItemGroup ig, DivineAltar divineAltar) {
+        super(ig, AlchimiaItems.ALTAR_OF_INFUSION, AlchimiaUtils.RecipeTypes.DIVINE_ALTAR, new ItemStack[]{
+                AlchimiaItems.EXP_CRYSTAL, SlimefunItems.WITHER_PROOF_GLASS, AlchimiaItems.EXP_CRYSTAL,
                 SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.BEACON), SlimefunItems.REINFORCED_PLATE,
-                SlimefunItems.BLISTERING_INGOT_3, Items.DIVINE_ALTAR, SlimefunItems.BLISTERING_INGOT_3
+                SlimefunItems.BLISTERING_INGOT_3, AlchimiaItems.DIVINE_ALTAR, SlimefunItems.BLISTERING_INGOT_3
         });
 
-        // Get plugin and config
-        AlchimiaVitae av = AlchimiaVitae.i();
-        Configuration cfg = av.getConfig();
+        // Add recipe to Divine Altar
+        divineAltar.newRecipe(AlchimiaItems.ALTAR_OF_INFUSION, this.getRecipe());
+    }
+
+    // {{{ Set up effects
+    @Override
+    protected void newInstanceEffects(World w, Location l) {
+        // End rod particles
+        w.spawnParticle(Particle.END_ROD, l, 100, 0.5, 0.5, 0.5);
+    }
+    // }}}
+
+    // {{{ Set up recipes
+    // {{{ Add all recipes
+    @Override
+    protected void addDefaultRecipes() {
+        // {{{ Prepare
+        // Get plugin instance and config
+        AlchimiaVitae instance = AlchimiaVitae.i();
+        Configuration cfg = instance.getConfig();
 
         // Get config values
         boolean destructiveCritsEnabled = cfg.getBoolean("options.infusions.infusion-destructivecrits");
-        boolean phantomCritsEnabled = cfg.getBoolean("options.infusions.infusion-phantomcrits");
-        boolean trueAimEnabled = cfg.getBoolean("options.infusions.infusion-trueaim");
-        boolean forcefulEnabled = cfg.getBoolean("options.infusions.infusion-forceful");
-        boolean volatileEnabled = cfg.getBoolean("options.infusions.infusion-volatile");
-        boolean healingEnabled = cfg.getBoolean("options.infusions.infusion-healing");
-        boolean autoReplantEnabled = cfg.getBoolean("options.infusions.infusion-autoreplant");
-        boolean totemStorageEnabled = cfg.getBoolean("options.infusions.infusion-totemstorage");
-        /*
-         **Useless atm**
-         boolean shieldDisruptorEnabled = cfg.getBoolean("options.infusions.infusion-shielddisruptor");
-         boolean spikedHookEnabled = cfg.getBoolean("options.infusions.infusion-spikedhook");
-        */
-        boolean knockbackEnabled = cfg.getBoolean("options.infusions.infusion-knockback");
+        boolean phantomCritsEnabled     = cfg.getBoolean("options.infusions.infusion-phantomcrits");
+        boolean trueAimEnabled          = cfg.getBoolean("options.infusions.infusion-trueaim");
+        boolean forcefulEnabled         = cfg.getBoolean("options.infusions.infusion-forceful");
+        boolean volatileEnabled         = cfg.getBoolean("options.infusions.infusion-volatile");
+        boolean healingEnabled          = cfg.getBoolean("options.infusions.infusion-healing");
+        boolean autoReplantEnabled      = cfg.getBoolean("options.infusions.infusion-autoreplant");
+        boolean totemStorageEnabled     = cfg.getBoolean("options.infusions.infusion-totemstorage");
+        boolean knockbackEnabled        = cfg.getBoolean("options.infusions.infusion-knockback");
 
-        // ItemStacks
-        CustomItemStack validInfuseAxe = new CustomItemStack(Material.DIAMOND_AXE, "&b&l一把有效的斧头", "&a可以是金、铁、钻石、下界合金材质");
-        CustomItemStack validInfuseBow = new CustomItemStack(Material.BOW, "&b&l一把有效的弓", "&a可以是弓与弩");
-        CustomItemStack validInfuseHoe = new CustomItemStack(Material.DIAMOND_HOE, "&b&l一把有效的锄头", "a可以是金、铁、钻石、下界合金材质");
-        CustomItemStack validInfuseChestplate = new CustomItemStack(Material.DIAMOND_CHESTPLATE, "&b&l一件有效的胸甲", "a可以是金、铁、钻石、下界合金材质");
-        /*
-         **Useless atm**
-         CustomItemStack validInfuseSword = new CustomItemStack(Material.DIAMOND_SWORD, "&b&lA valid sword to infuse", "&aA gold, iron, diamond,", "&aor netherite sword will suffice");
-        */
-        CustomItemStack validInfuseRod = new CustomItemStack(Material.FISHING_ROD, "&b&l一把有效的钓竿", "&a可以是钓竿");
-        SlimefunItemStack item;
+        // Create placeholder items
+        CustomItemStack validMelee      = new CustomItemStack(Material.DIAMOND_SWORD, "&a&o一把斧头或剑, ",
+            "&a&o可以是金、铁、钻石材质的。");
+        CustomItemStack validRanged     = new CustomItemStack(Material.BOW, "&a&o一把弓或弩。");
+        CustomItemStack validHoe        = new CustomItemStack(Material.DIAMOND_HOE, "&a&o一把锄头，",
+            "&a&o可以是金、铁、钻石材质的。");
+        CustomItemStack validChestplate = new CustomItemStack(Material.DIAMOND_CHESTPLATE, "&a&o一件胸甲，",
+            "&a&o可以是金、铁、钻石、下界合金材质的。");
+        CustomItemStack validFishingRod = new CustomItemStack(Material.FISHING_ROD, "&a&o一把钓竿。");
 
-        // Register Infusions
+        // Get ItemGroup and RecipeType
+        ItemGroup ig = AlchimiaUtils.ItemGroups.INFUSIONS;
+        RecipeType rt = AlchimiaUtils.RecipeTypes.INFUSION_ALTAR;
+        // }}}
+
+        // {{{ Melee weapons
         if (destructiveCritsEnabled) {
-            recipes.put(new ItemStack[] {
-                    new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_PICKAXE, new ItemStack(Material.STONECUTTER),
-                    Items.DARKSTEEL, SlimefunItems.WITHER_PROOF_OBSIDIAN,
-                    new ItemStack(Material.REDSTONE_BLOCK), SlimefunItems.WITHER_PROOF_OBSIDIAN, new ItemStack(Material.TNT)
-            }, DESTRUCTIVE_CRITS);
+            this.newRecipe(ig, rt,
+                // Out
+                Infusion.DESTRUCTIVE_CRITS,
 
-            item = new SlimefunItemStack(
-                "AV_DESTRUCTIVE_CRITS_INFUSION",
-                Material.TNT,
-                "&c&l毁灭暴击",
-                "&4暴击时:",
-                "&4- 有 1/20 的几率使目标获得 8 秒挖掘疲劳 III 效果",
-                "&4- 有 1/5 的几率使目标获得 15 秒缓慢 I 效果",
-                "&4- 有 1/5 的几率使目标获得 15 秒虚弱 I 效果",
-                "&4- 对目标的护甲造成额外 0-5 点伤害"
+                // In
+                new ItemStack[] {
+                        new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_PICKAXE, new ItemStack(Material.STONECUTTER),
+                        AlchimiaItems.DARKSTEEL, validMelee, SlimefunItems.WITHER_PROOF_OBSIDIAN,
+                        new ItemStack(Material.REDSTONE_BLOCK), SlimefunItems.WITHER_PROOF_OBSIDIAN, new ItemStack(Material.TNT)
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_PICKAXE, new ItemStack(Material.STONECUTTER),
-                    Items.DARKSTEEL, validInfuseAxe, SlimefunItems.WITHER_PROOF_OBSIDIAN,
-                    new ItemStack(Material.REDSTONE_BLOCK), SlimefunItems.WITHER_PROOF_OBSIDIAN, new ItemStack(Material.TNT)
-            }, item).register(av);
         }
 
         if (phantomCritsEnabled) {
-            recipes.put(new ItemStack[] {
+            this.newRecipe(ig, rt,
+                Infusion.PHANTOM_CRITS,
+
+                new ItemStack[] {
                     new ItemStack(Material.PHANTOM_MEMBRANE), SlimefunItems.MAGICAL_GLASS, new ItemStack(Material.PHANTOM_MEMBRANE),
-                    Items.DARKSTEEL, SlimefunItems.HARDENED_GLASS,
-                    new ItemStack(Material.PHANTOM_MEMBRANE), Items.CONDENSED_SOUL, new ItemStack(Material.PHANTOM_MEMBRANE)
-            }, PHANTOM_CRITS);
-
-            item = new SlimefunItemStack(
-                "AV_PHANTOM_CRITS_INFUSION",
-                Material.PHANTOM_MEMBRANE,
-                "&b幻影暴击",
-                "&a暴击时,有小概率造成额外伤害,无视护甲"
+                    AlchimiaItems.DARKSTEEL, validMelee, SlimefunItems.HARDENED_GLASS,
+                    new ItemStack(Material.PHANTOM_MEMBRANE), AlchimiaItems.CONDENSED_SOUL, new ItemStack(Material.PHANTOM_MEMBRANE)
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    new ItemStack(Material.PHANTOM_MEMBRANE), SlimefunItems.MAGICAL_GLASS, new ItemStack(Material.PHANTOM_MEMBRANE),
-                    Items.DARKSTEEL, validInfuseAxe, SlimefunItems.HARDENED_GLASS,
-                    new ItemStack(Material.PHANTOM_MEMBRANE), Items.CONDENSED_SOUL, new ItemStack(Material.PHANTOM_MEMBRANE)
-            }, item).register(av);
         }
+        // }}}
 
-        if (trueAimEnabled) {
-            recipes.put(new ItemStack[] {
-                    SlimefunItems.SYNTHETIC_SHULKER_SHELL, SlimefunItems.INFUSED_MAGNET, SlimefunItems.STAFF_WIND,
-                    Items.DARKSTEEL, Items.EXP_CRYSTAL,
-                    new ItemStack(Material.SHULKER_BOX), SlimefunItems.INFUSED_ELYTRA, SlimefunItems.STEEL_THRUSTER
-            }, TRUE_AIM);
-
-            item = new SlimefunItemStack(
-                "AV_TRUE_AIM_INFUSION",
-                Material.SHULKER_SHELL,
-                "&d自瞄",
-                "&5使用来自潜影壳的漂浮魔法",
-                "&5来处决目标",
-                "&5注入该魔法的弓将射出",
-                "&5不受重力影响的箭矢"
-            );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    SlimefunItems.SYNTHETIC_SHULKER_SHELL, SlimefunItems.INFUSED_MAGNET, SlimefunItems.STAFF_WIND,
-                    Items.DARKSTEEL, validInfuseBow, Items.EXP_CRYSTAL,
-                    new ItemStack(Material.SHULKER_BOX), SlimefunItems.INFUSED_ELYTRA, SlimefunItems.STEEL_THRUSTER
-            }, item).register(av);
-        }
-
+        // {{{ Ranged weapons
         if (forcefulEnabled) {
-            recipes.put(new ItemStack[] {
+            this.newRecipe(ig, rt,
+                Infusion.FORCEFUL,
+
+                new ItemStack[] {
                     SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.STAFF_WIND,
-                    SlimefunItems.INFUSED_MAGNET, SlimefunItems.STEEL_THRUSTER,
+                    SlimefunItems.INFUSED_MAGNET, validRanged, SlimefunItems.STEEL_THRUSTER,
                     SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.TALISMAN_TRAVELLER
-            }, FORCEFUL);
-
-            item = new SlimefunItemStack(
-                "AV_FORCEFUL_INFUSION",
-                Material.PISTON,
-                "&2强力",
-                "&a该注入魔法将使用机械设备与电磁铁",
-                "&a来加速弹射物",
-                "&a箭矢将获得2倍射程与额外伤害"
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.STAFF_WIND,
-                    SlimefunItems.INFUSED_MAGNET, validInfuseBow, SlimefunItems.STEEL_THRUSTER,
-                    SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.PISTON), SlimefunItems.TALISMAN_TRAVELLER
-            }, item).register(av);
-        }
-
-        if (volatileEnabled) {
-            recipes.put(new ItemStack[] {
-                    new ItemStack(Material.BLAZE_ROD), SlimefunItems.STAFF_FIRE, SlimefunItems.TALISMAN_FIRE,
-                    Items.DARKSTEEL, SlimefunItems.LAVA_GENERATOR_2,
-                    new ItemStack(Material.TNT), SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.LAVA_CRYSTAL
-            }, VOLATILE);
-
-            item = new SlimefunItemStack(
-                "AV_VOLATILE_INFUSION",
-                Material.FIRE_CHARGE,
-                "&4&l挥发",
-                "&c这种非常危险的注入魔法",
-                "&c可以生成由滚烫岩浆制成的球体",
-                "&c对目标释放迷你地狱",
-                "&4有 1/7 的几率发射一颗大火球",
-                "&4有 6/7 的几率发射一颗小火球"
-            );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    new ItemStack(Material.BLAZE_ROD), SlimefunItems.STAFF_FIRE, SlimefunItems.TALISMAN_FIRE,
-                    Items.DARKSTEEL, validInfuseBow, SlimefunItems.LAVA_GENERATOR_2,
-                    new ItemStack(Material.TNT), SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.LAVA_CRYSTAL
-            }, item).register(av);
         }
 
         if (healingEnabled) {
-            recipes.put(new ItemStack[] {
-                    Items.BENEVOLENT_BREW, SlimefunItems.MEDICINE, SlimefunItems.VITAMINS,
-                    Items.ILLUMIUM, new ItemStack(Material.TOTEM_OF_UNDYING),
-                    new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), SlimefunItems.MEDICINE, SlimefunItems.MAGIC_SUGAR
-            }, HEALING);
+            this.newRecipe(ig, rt,
+                Infusion.HEALING,
 
-            item = new SlimefunItemStack(
-                "AV_HEALING_INFUSION",
-                Material.REDSTONE,
-                "&c治疗",
-                "&c该注入魔法可以治疗目标",
-                "&c且不会造成伤害",
-                "&a治疗量与伤害相同"
+                new ItemStack[] {
+                    AlchimiaItems.BENEVOLENT_BREW, SlimefunItems.MEDICINE, SlimefunItems.VITAMINS,
+                    AlchimiaItems.ILLUMIUM, validRanged, new ItemStack(Material.TOTEM_OF_UNDYING),
+                    new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), SlimefunItems.MEDICINE, SlimefunItems.MAGIC_SUGAR
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    Items.BENEVOLENT_BREW, SlimefunItems.MEDICINE, SlimefunItems.VITAMINS,
-                    Items.ILLUMIUM, validInfuseBow, new ItemStack(Material.TOTEM_OF_UNDYING),
-                    new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), SlimefunItems.MEDICINE, SlimefunItems.MAGIC_SUGAR
-            }, item).register(av);
         }
 
-        if (autoReplantEnabled) {
-            recipes.put(new ItemStack[] {
-                    new ItemStack(Material.COMPOSTER), Items.GOOD_ESSENCE, new ItemStack(Material.WATER_BUCKET),
-                    Items.ILLUMIUM, SlimefunItems.FLUID_PUMP,
-                    new ItemStack(Material.BONE_BLOCK), Items.GOOD_MAGIC_PLANT, new ItemStack(Material.GRINDSTONE)
-            }, REPLANT);
+        if (trueAimEnabled) {
+            this.newRecipe(ig, rt,
+                Infusion.TRUE_AIM,
 
-            item = new SlimefunItemStack(
-                "AV_AUTO_REPLANT_INFUSION",
-                Material.WHEAT,
-                "&a自动补种",
-                "&2使用任何注入该魔法的锄头",
-                "&2破坏完全生长的植物时",
-                "&2会&a自动&2补种"
+                new ItemStack[] {
+                    SlimefunItems.SYNTHETIC_SHULKER_SHELL, SlimefunItems.INFUSED_MAGNET, SlimefunItems.STAFF_WIND,
+                    AlchimiaItems.DARKSTEEL, validRanged, AlchimiaItems.EXP_CRYSTAL,
+                    new ItemStack(Material.SHULKER_BOX), SlimefunItems.INFUSED_ELYTRA, SlimefunItems.STEEL_THRUSTER
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    new ItemStack(Material.COMPOSTER), Items.GOOD_ESSENCE, new ItemStack(Material.WATER_BUCKET),
-                    Items.ILLUMIUM, validInfuseHoe, SlimefunItems.FLUID_PUMP,
-                    new ItemStack(Material.BONE_BLOCK), Items.GOOD_MAGIC_PLANT, new ItemStack(Material.GRINDSTONE)
-            }, item).register(av);
         }
 
+        if (volatileEnabled) {
+            this.newRecipe(ig, rt,
+                Infusion.VOLATILITY,
+
+                new ItemStack[] {
+                    new ItemStack(Material.BLAZE_ROD), SlimefunItems.STAFF_FIRE, SlimefunItems.TALISMAN_FIRE,
+                    AlchimiaItems.DARKSTEEL, validRanged, SlimefunItems.LAVA_GENERATOR_2,
+                    new ItemStack(Material.TNT), SlimefunItems.SYNTHETIC_DIAMOND, SlimefunItems.LAVA_CRYSTAL
+                }
+            );
+        }
+        // }}}
+
+        // {{{ Chestplate
         if (totemStorageEnabled) {
-            recipes.put(new ItemStack[] {
-                    SlimefunItems.NECROTIC_SKULL, Items.CONDENSED_SOUL, Items.BENEVOLENT_BREW,
-                    Items.ILLUMIUM, Items.EXP_CRYSTAL,
-                    SlimefunItems.ESSENCE_OF_AFTERLIFE, SlimefunItems.ENERGIZED_CAPACITOR, SlimefunItems.ESSENCE_OF_AFTERLIFE
-            }, TOTEM_STORAGE);
+            this.newRecipe(ig, rt,
+                Infusion.TOTEM_BATTERY,
 
-            item = new SlimefunItemStack(
-                "AV_TOTEM_BATTERY_INFUSION",
-                Material.TOTEM_OF_UNDYING,
-                "&6&l图腾电池",
-                "&e内置口袋维度",
-                "&e可容纳最多8个不死图腾",
-                "&6当装备该胸甲时，手持不死图腾并",
-                "&e&lShift+右键&6来存入不死图腾"
+                new ItemStack[] {
+                    SlimefunItems.NECROTIC_SKULL, AlchimiaItems.CONDENSED_SOUL, AlchimiaItems.BENEVOLENT_BREW,
+                    AlchimiaItems.ILLUMIUM, validChestplate, AlchimiaItems.EXP_CRYSTAL,
+                    SlimefunItems.ESSENCE_OF_AFTERLIFE, SlimefunItems.ENERGIZED_CAPACITOR, SlimefunItems.ESSENCE_OF_AFTERLIFE
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    SlimefunItems.NECROTIC_SKULL, Items.CONDENSED_SOUL, Items.BENEVOLENT_BREW,
-                    Items.ILLUMIUM, validInfuseChestplate, Items.EXP_CRYSTAL,
-                    SlimefunItems.ESSENCE_OF_AFTERLIFE, SlimefunItems.ENERGIZED_CAPACITOR, SlimefunItems.ESSENCE_OF_AFTERLIFE
-            }, item).register(av);
         }
+        // }}}
 
+        // {{{ Fishing rod
         if (knockbackEnabled) {
-            recipes.put(new ItemStack[] {
-                    SlimefunItems.TALISMAN_WHIRLWIND, new ItemStack(Material.STICKY_PISTON), Items.EXP_CRYSTAL,
-                    SlimefunItems.GRANDPAS_WALKING_STICK, new ItemStack(Material.STICKY_PISTON),
-                    new ItemStack(Material.SLIME_BALL), SlimefunItems.GRANDPAS_WALKING_STICK, SlimefunItems.TALISMAN_WHIRLWIND
-            }, KNOCKBACK);
+            this.newRecipe(ig, rt,
+                Infusion.KNOCKBACK,
 
-            item = new SlimefunItemStack(
-                "AV_KNOCKBACK_INFUSION",
-                Material.SLIME_BALL,
-                "&a击退",
-                "&2使用钓竿拉回的玩家",
-                "&2将会被击退"
+                new ItemStack[] {
+                    SlimefunItems.TALISMAN_WHIRLWIND, new ItemStack(Material.STICKY_PISTON), AlchimiaItems.EXP_CRYSTAL,
+                    SlimefunItems.GRANDPAS_WALKING_STICK, validFishingRod, new ItemStack(Material.STICKY_PISTON),
+                    new ItemStack(Material.SLIME_BALL), SlimefunItems.GRANDPAS_WALKING_STICK, SlimefunItems.TALISMAN_WHIRLWIND
+                }
             );
-
-            new SlimefunItem(Utils.ItemGroups.INFUSIONS, item, Utils.RecipeTypes.INFUSION_ALTAR_TYPE, new ItemStack[] {
-                    SlimefunItems.TALISMAN_WHIRLWIND, new ItemStack(Material.STICKY_PISTON), Items.EXP_CRYSTAL,
-                    SlimefunItems.GRANDPAS_WALKING_STICK, validInfuseRod, new ItemStack(Material.STICKY_PISTON),
-                    new ItemStack(Material.SLIME_BALL), SlimefunItems.GRANDPAS_WALKING_STICK, SlimefunItems.TALISMAN_WHIRLWIND
-            }, item).register(av);
         }
+        // }}}
+
+        // {{{ Hoe
+        if (autoReplantEnabled) {
+            this.newRecipe(ig, rt,
+                Infusion.AUTO_REPLANT,
+
+                new ItemStack[] {
+                    new ItemStack(Material.COMPOSTER), AlchimiaItems.LIGHT_ESSENCE, new ItemStack(Material.WATER_BUCKET),
+                    AlchimiaItems.ILLUMIUM, validHoe, SlimefunItems.FLUID_PUMP,
+                    new ItemStack(Material.BONE_BLOCK), AlchimiaItems.LIGHT_MAGIC_PLANT, new ItemStack(Material.GRINDSTONE)
+                }
+            );
+        }
+        // }}}
     }
+    // }}}
 
+    // {{{ Add a new recipe
     @Override
-    protected void setup(@NotNull BlockMenuPreset blockMenuPreset) {
-        // Input background
-        for (int slot : IN_BG) {
-            blockMenuPreset.addItem(slot, Items.IN_BG, ChestMenuUtils.getEmptyClickHandler());
+    public void newRecipe(@Nonnull ItemGroup ig, @Nonnull RecipeType rt, @Nonnull Infusion output, @Nonnull ItemStack... input) {
+        ItemStack[] newInput = new ItemStack[8];
+
+        // Add outer items (items excluding middle slot) to new recipe
+        int i = 0;
+        int newI = 0;
+        for (ItemStack stack : input) {
+            // 0 1 2
+            // 3 4 5
+            // 6 7 8
+            // Exclude middle item
+            if (i != 4) {
+                newInput[newI] = stack;
+                newI++;
+            }
+
+            i++;
         }
 
-        // Input slots
-        for (int slot : IN_SLOTS) {
-            blockMenuPreset.addMenuClickHandler(slot, (player, i, itemStack, clickAction) -> i == slot || i > 44);
-        }
+        // Add the recipe to the map
+        this.recipes.put(output, newInput);
 
-        // Craft button background
-        for (int slot : CRAFT_BG) {
-            blockMenuPreset.addItem(slot, Items.CRAFT_BG, ChestMenuUtils.getEmptyClickHandler());
-        }
-
-        // Craft button
-        for (int slot : CRAFT_BUTTON) {
-            blockMenuPreset.addItem(slot, Items.CRAFT_BTN);
-        }
+        // Register guide item
+        new SlimefunItem(ig, output.guideItem(), rt, input).register(AlchimiaVitae.i());
     }
+    // }}}
+    // }}}
 
+    // {{{ Begin crafting
     @Override
-    protected void onNewInstance(@NotNull BlockMenu menu, @NotNull Block b) {
-        // Spawn end rod particles
-        b.getWorld().spawnParticle(Particle.END_ROD, b.getLocation(), 100, 0.5, 0.5, 0.5);
-
-        // Craft button click handler
-        for (int slot : CRAFT_BUTTON) {
-            menu.addMenuClickHandler(slot, (player, i, itemStack, clickAction) -> {
-                // Craft item
-                craft(b, menu, player);
-                return false;
-            });
-        }
-    }
-
-    @Override
-    protected void onBreak(@NotNull BlockBreakEvent e, @NotNull BlockMenu menu) {
-        Location l = menu.getLocation();
-        menu.dropItems(l, IN_SLOTS);
-    }
-
-    @Override
-    protected void craft(@NotNull Block b, @NotNull BlockMenu inv, @NotNull Player p) {
-        // Get expected Infusion
+    protected void craft(@Nonnull Block b, @Nonnull BlockMenu menu, @Nonnull Player p) {
+        // {{{ Getting input
         ItemStack[] input = new ItemStack[8];
 
         int index = 0;
-        for (int i : IN_SLOTS_EXCLUDING_MID) {
-            input[index] = inv.getItemInSlot(i);
-            index++;
-        }
-
-        NamespacedKey infusion = recipes.get(input);
-
-        // Invalid Infusion
-        if (infusion == null) {
-            p.sendMessage(Utils.legacySerialize("<red>无效的注入!"));
-            return;
-        }
-
-        Material mat = inv.getItemInSlot(TOOL_SLOT).getType();
-
-        // Check if item is valid
-        if (mat.isItem()) {
-            if (VALID_AXE.contains(mat) ||
-                    (((VALID_BOW.contains(mat) ||
-                    VALID_HOE.contains(mat) ||
-                    VALID_CHESTPLATE.contains(mat)) ||
-                    VALID_FISHING_ROD.contains(mat)))) {
-                // Valid item
-            } else {
-                // Invalid item
-                p.sendMessage(Utils.legacySerialize("<red>你不能注入该工具!"));
-                return;
+        for (int i : IN_SLOTS) {
+            if (i != TOOL_SLOT) {
+                input[index] = menu.getItemInSlot(i);
+                index++;
             }
-        } else {
-            // Invalid item
-            p.sendMessage(Utils.legacySerialize("<red>你不能注入方块!"));
-            return;
         }
 
+        // Get expected infusion
+        Infusion infusion = this.recipes.get(input);
+
+        // Make sure the recipe is valid
+        if (infusion == null) {
+            p.sendMessage(AlchimiaUtils.format("<red>无效的注入配方！"));
+            return;
+        }
+        // }}}
+
+        // {{{ Checks
         // Get the tool
-        ItemStack tool = inv.getItemInSlot(TOOL_SLOT);
-        if (tool == null || tool.getType().equals(Material.AIR)) {
-            // No tool
-            p.sendMessage(Utils.legacySerialize("<red>你不能注入空气!"));
-            return;
-        }
-
-        // ItemMeta
+        ItemStack tool = menu.getItemInSlot(TOOL_SLOT);
         ItemMeta meta = tool.getItemMeta();
 
-        // Container
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-
-        // Check if tool is already infused
-        if (container.has(DESTRUCTIVE_CRITS, PersistentDataType.BYTE) ||
-                container.has(PHANTOM_CRITS, PersistentDataType.BYTE) ||
-                container.has(TRUE_AIM, PersistentDataType.BYTE) ||
-                container.has(FORCEFUL, PersistentDataType.BYTE) ||
-                container.has(VOLATILE, PersistentDataType.BYTE) ||
-                container.has(HEALING, PersistentDataType.BYTE) ||
-                container.has(TOTEM_STORAGE, PersistentDataType.INTEGER) ||
-                container.has(REPLANT, PersistentDataType.BYTE) ||
-                container.has(KNOCKBACK, PersistentDataType.BYTE)) {
-            // Tool is already infused
-            p.sendMessage(Utils.legacySerialize("<red>该物品已注入魔法!"));
+        // Make sure there is a tool
+        if (tool == null || meta == null || tool.getType().equals(Material.AIR)) {
+            p.sendMessage(AlchimiaUtils.format("<red>没有物品可以注入！"));
             return;
         }
 
-        // Check if the tool can be infused
-        if (canBeInfused(tool, infusion) && !infusion.equals(TOTEM_STORAGE)) {
-            // Tool can be infused and the Infusion is not the totem battery
-            container.set(infusion, PersistentDataType.BYTE, (byte) 1);
-
-            // Lore
-            List<String> lore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
-
-            // Add lines to lore
-            lore.add("");
-            lore.add(Utils.legacySerialize("<gray>注入:"));
-
-            // Add infusion name to lore
-            if (infusion.equals(DESTRUCTIVE_CRITS)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <red><bold>毁灭暴击"));
-            } else if (infusion.equals(PHANTOM_CRITS)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <aqua>幻影暴击"));
-            } else if (infusion.equals(TRUE_AIM)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <light_purple>自瞄"));
-            } else if (infusion.equals(FORCEFUL)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <dark_green>强力"));
-            } else if (infusion.equals(VOLATILE)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <dark_red><bold>挥发"));
-            } else if (infusion.equals(HEALING)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <red>治疗"));
-            } else if (infusion.equals(REPLANT)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <green>自动补种"));
-            } else if (infusion.equals(KNOCKBACK)) {
-                lore.add(Utils.legacySerialize("<dark_gray>› <green>击退"));
-            }
-
-            // Set lore and meta
-            meta.setLore(lore);
-            tool.setItemMeta(meta);
-        } else if (canBeInfused(tool, infusion) && infusion.equals(TOTEM_STORAGE)) {
-            // Tool can be infused and the Infusion is the totem battery
-            container.set(infusion, PersistentDataType.INTEGER, 0);
-
-            // Lore
-            List<String> lore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
-
-            // Add lines to lore
-            lore.add("");
-            lore.add(Utils.legacySerialize("<gray>注入:"));
-
-            // Add infusion name to lore
-            lore.add(Utils.legacySerialize("<dark_gray>› <gold><bold>图腾电池"));
-
-            // Set lore and meta
-            meta.setLore(lore);
-            tool.setItemMeta(meta);
-        } else {
-            // Tool cannot be infused
-            p.sendMessage(Utils.legacySerialize("<red>该注入魔法不适用于当前物品!"));
+        // Make sure the tool is valid
+        if (!Infusion.ANY.canApply(tool)) {
+            p.sendMessage(AlchimiaUtils.format("<red>你不能注入该物品！"));
             return;
         }
+
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+
+        // Make sure the tool is not already infused
+        if (Infusion.ANY.has(pdc)) {
+            p.sendMessage(AlchimiaUtils.format("<red>该物品已有注入！"));
+            return;
+        }
+
+        // Make sure the infusion is applicable to the tool
+        if (!infusion.canApply(tool)) {
+            p.sendMessage(AlchimiaUtils.format("<red>你不能向物品应用该注入！"));
+            return;
+        }
+        // }}}
+
+        // {{{ Infuse
+        infusion.apply(pdc);
+
+        // Add lore
+        List<String> lore = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
+
+        lore.add("");
+        lore.add(AlchimiaUtils.format("<gray>注入："));
+
+        // Infusion name to lore
+        lore.add(AlchimiaUtils.format("<dark_gray>› " + infusion.lore()));
+
+        // Set lore and meta
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+        // }}}
+
+        // Finish crafting
+        this.finish(b.getWorld(), b.getLocation().add(0.5, 0.5, 0.5), menu, infusion);
+    }
+    // }}}
+
+    // {{{ Finish crafting
+    @Override
+    protected void finish(World w, Location l, BlockMenu menu, Infusion infusion) {
+        // Get item
+        ItemStack tool = menu.getItemInSlot(TOOL_SLOT).clone();
 
         // Consume items
-        for (int slot : IN_SLOTS_EXCLUDING_MID) {
-            inv.consumeItem(slot, 1);
+        for (int slot : IN_SLOTS) {
+            menu.consumeItem(slot, 1);
         }
 
-        // Pre-craft effects
-        b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ILLUSIONER_PREPARE_MIRROR, 1, 1);
-        b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BEACON_POWER_SELECT, 1.5F, 1);
-        b.getWorld().spawnParticle(Particle.FLASH, b.getLocation().add(0.5, 0.5, 0.5), 2, 0.1, 0.1, 0.1);
+        // Schedule task
+        new BukkitRunnable() {
+            private int layer = 3;
 
-        Bukkit.getScheduler().runTaskLater(AlchimiaVitae.i(), () -> {
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ILLUSIONER_CAST_SPELL, 1, 1);
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_CONDUIT_ATTACK_TARGET, 0.5F, 1);
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ILLUSIONER_PREPARE_BLINDNESS, 1, 1);
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_TOTEM_USE, 0.1F, 1);
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BEACON_POWER_SELECT, 0.3F, 1);
-            b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_LODESTONE_PLACE, 1.5F, 1);
-            b.getWorld().spawnParticle(Particle.FLASH, b.getLocation().add(0.5, 0.5, 0.5), 2, 0.1, 0.1, 0.1);
+            @Override
+            public void run() {
+                if (layer == 3) {
+                    // Pre-craft
+                    w.playSound(l, Sound.ENTITY_ILLUSIONER_PREPARE_MIRROR, 1, 1);
+                    w.playSound(l, Sound.BLOCK_BEACON_POWER_SELECT, 1.5F, 1);
+                    w.spawnParticle(Particle.FLASH, l, 2, 0.1, 0.1, 0.1);
 
-            Bukkit.getScheduler().runTaskLater(AlchimiaVitae.i(), () -> {
-                b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1, 1);
-                b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_CONDUIT_ATTACK_TARGET, 1.5F, 1);
-                b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_LODESTONE_COMPASS_LOCK, 1.5F, 1);
-                b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BEACON_POWER_SELECT, 0.3F, 1);
-                b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_TOTEM_USE, 0.3F, 1);
-                b.getWorld().spawnParticle(Particle.FLASH, b.getLocation().add(0.5, 0.5, 0.5), 2, 0.1, 0.1, 0.1);
+                    // Decrease layer
+                    layer--;
+                } else if (layer == 2) {
+                    // Pre-craft
+                    w.playSound(l, Sound.ENTITY_ILLUSIONER_CAST_SPELL, 1, 1);
+                    w.playSound(l, Sound.BLOCK_CONDUIT_ATTACK_TARGET, 0.5F, 1);
+                    w.playSound(l, Sound.ENTITY_ILLUSIONER_PREPARE_BLINDNESS, 1, 1);
+                    w.playSound(l, Sound.ITEM_TOTEM_USE, 0.1F, 1);
+                    w.playSound(l, Sound.BLOCK_BEACON_POWER_SELECT, 0.3F, 1);
+                    w.playSound(l, Sound.BLOCK_LODESTONE_PLACE, 1.5F, 1);
+                    w.spawnParticle(Particle.FLASH, l, 2, 0.1, 0.1, 0.1);
 
-                Bukkit.getScheduler().runTaskLater(AlchimiaVitae.i(), () -> {
-                    // Post-craft effects
-                    b.getWorld().strikeLightningEffect(b.getLocation().add(0.5, 1, 0.5));
-                    b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_TRIDENT_THUNDER, 0.5F, 1);
-                    b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1, 1);
-                    b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
-                    b.getWorld().playSound(b.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_TOTEM_USE, 0.5F, 1);
-                    b.getWorld().spawnParticle(Particle.END_ROD, b.getLocation().add(0.5, 0.5, 0.5), 5, 0, 8, 0);
-                    b.getWorld().spawnParticle(Particle.PORTAL, b.getLocation().add(0.5, 0.5, 0.5), 300, 2, 2, 2);
+                    // Decrease layer
+                    layer--;
+                } else if (layer == 1) {
+                    // Pre-craft
+                    w.playSound(l, Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1, 1);
+                    w.playSound(l, Sound.BLOCK_CONDUIT_ATTACK_TARGET, 1.5F, 1);
+                    w.playSound(l, Sound.ITEM_LODESTONE_COMPASS_LOCK, 1.5F, 1);
+                    w.playSound(l, Sound.BLOCK_BEACON_POWER_SELECT, 0.3F, 1);
+                    w.playSound(l, Sound.ITEM_TOTEM_USE, 0.3F, 1);
+                    w.spawnParticle(Particle.FLASH, l, 2, 0.1, 0.1, 0.1);
 
-                    // Send message
-                    p.sendMessage(Utils.legacySerialize("<gradient:#50fa75:#3dd2ff>物品已注入魔法!</gradient>"));
-                }, 30);
-            }, 30);
-        }, 30);
+                    // Decrease layer
+                    layer--;
+                } else {
+                    // Output the item
+                    if (menu.fits(tool, OUT_SLOTS)) {
+                        menu.pushItem(tool, OUT_SLOTS);
+                    } else {
+                        // Drop if it doesn't fit
+                        w.dropItemNaturally(l.add(0, 0.5, 0), tool);
+                    }
+
+                    // Post-craft
+                    w.strikeLightningEffect(l.add(0, 0.5, 0));
+                    w.playSound(l, Sound.ITEM_TRIDENT_THUNDER, 0.5F, 1);
+                    w.playSound(l, Sound.ENTITY_ILLUSIONER_MIRROR_MOVE, 1, 1);
+                    w.playSound(l, Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                    w.playSound(l, Sound.ITEM_TOTEM_USE, 0.5F, 1);
+                    w.spawnParticle(Particle.END_ROD, l, 5, 0, 8, 0);
+                    w.spawnParticle(Particle.PORTAL, l, 300, 2, 2, 2);
+
+                    // Cancel runnable
+                    this.cancel();
+                }
+            }
+        }.runTaskTimer(AlchimiaVitae.i(), 0, 30);
     }
+    // }}}
 
-    private boolean canBeInfused(@NotNull ItemStack tool, @NotNull NamespacedKey infusion) {
-        // Get the material
-        Material mat = tool.getType();
+    // {{{ Infusions
+    public enum Infusion {
 
-        // Check if the Infusion can be applied to the tool
-        if (mat.isItem()) {
-            if (VALID_AXE.contains(mat) &&
-                    (infusion.equals(DESTRUCTIVE_CRITS) ||
-                            infusion.equals(PHANTOM_CRITS))) {
-                return true;
-            } else if (VALID_BOW.contains(mat) &&
-                    (infusion.equals(TRUE_AIM) ||
-                            infusion.equals(FORCEFUL) ||
-                            infusion.equals(VOLATILE) ||
-                            infusion.equals(HEALING))) {
-                return true;
-            } else if (VALID_HOE.contains(mat) &&
-                    infusion.equals(REPLANT)) {
-                return true;
-            } else if (VALID_CHESTPLATE.contains(mat) &&
-                    infusion.equals(TOTEM_STORAGE)) {
-                return true;
-            } else if (VALID_FISHING_ROD.contains(mat) &&
-                    infusion.equals(KNOCKBACK)) {
-                return true;
+        // {{{ Enum values
+        // {{{ Melee weapons
+        DESTRUCTIVE_CRITS(
+                "infusion_destructivecrits",
+                "<red><bold>毁灭暴击",
+
+                new SlimefunItemStack("AV_DESTRUCTIVE_CRITS_INFUSION", Material.TNT, "&c&l毁灭暴击",
+                        "&4暴击时有小概率给你的对手施加",
+                        "&4负面效果，并对护甲造成额外伤害。")),
+
+        PHANTOM_CRITS (
+                "infusion_phantomcrits",
+                "<aqua>幻影暴击",
+
+                new SlimefunItemStack("AV_PHANTOM_CRITS_INFUSION", Material.PHANTOM_MEMBRANE, "&b幻影暴击",
+                        "&7暴击时有小概率造成无视护甲的额外伤害。")),
+        // }}}
+
+        // {{{ Ranged weapons
+        FORCEFUL(
+                "infusion_forceful",
+                "<dark_green>强力",
+
+                new SlimefunItemStack("AV_FORCEFUL_INFUSION", Material.PISTON, "&2强力",
+                        "&2可以射出更远且伤害更高的箭。")),
+
+        HEALING(
+                "infusion_healing",
+                "<red>治疗",
+
+                new SlimefunItemStack("AV_HEALING_INFUSION", Material.REDSTONE, "&c治疗",
+                        "&c命中目标时将进行治疗。")),
+
+        TRUE_AIM(
+                "infusion_trueaim",
+                "<light_purple>真正的瞄准",
+
+                new SlimefunItemStack("AV_TRUE_AIM_INFUSION", Material.SHULKER_SHELL, "&d真正的瞄准",
+                        "&5可以射出不受重力影响的箭。")),
+
+        VOLATILITY(
+                "infusion_volatile",
+                "<dark_red><bold>挥发",
+
+                new SlimefunItemStack("AV_VOLATILE_INFUSION", Material.FIRE_CHARGE, "&4&l挥发",
+                        "&c可以发射火球。")),
+        // }}}
+
+        // {{{ Chestplate
+        TOTEM_BATTERY(
+                "infusion_totemstorage",
+                "<gold><bold>图腾电池",
+
+                new SlimefunItemStack("AV_TOTEM_BATTERY_INFUSION", Material.TOTEM_OF_UNDYING, "&6&l图腾电池",
+                        "&6最多可以存储8个不死图腾。",
+                        "&e手持不死图腾并&7&lShift+右键点击&e",
+                        "&e以存入。")),
+        // }}}
+
+        // {{{ Fishing rod
+        KNOCKBACK(
+                "infusion_knockback",
+                "<green>击退",
+
+                new SlimefunItemStack("AV_KNOCKBACK_INFUSION", Material.SLIME_BALL, "&a击退",
+                        "&a将目标击退而不是拉近。")),
+        // }}}
+
+        // {{{ Hoe
+        AUTO_REPLANT(
+                "infusion_autoreplant",
+                "<green>自动补种",
+
+                new SlimefunItemStack("AV_AUTO_REPLANT_INFUSION", Material.WHEAT, "&a自动补种",
+                        "&2收获作物时会自动补种。")),
+        // }}}
+
+        // Dummy value for checking if an item is infusable in general
+        ANY("infusion_dummy_any", "", null);
+        // }}}
+
+        // {{{ Fields & constructors
+        private final NamespacedKey key;
+        private final String lore;
+        private final SlimefunItemStack guideItem;
+
+        Infusion(String key, String lore, SlimefunItemStack guideItem) {
+            this.key = AbstractAddon.createKey(key);
+            this.lore = lore;
+            this.guideItem = guideItem;
+        }
+
+        // Get the key
+        public NamespacedKey key() {
+            return this.key;
+        }
+
+        // Get the lore
+        public String lore() {
+            return this.lore;
+        }
+
+        // Get the guide item
+        public SlimefunItemStack guideItem() {
+            return this.guideItem;
+        }
+        // }}}
+
+        // {{{ Check if an infusion can be applied to a tool
+        public boolean canApply(@Nonnull ItemStack tool) {
+            Material mat = tool.getType();
+
+            return switch (mat) {
+                // Melee weapons
+                case GOLDEN_AXE,
+                     IRON_AXE,
+                     DIAMOND_AXE,
+                     NETHERITE_AXE,
+                     GOLDEN_SWORD,
+                     IRON_SWORD,
+                     DIAMOND_SWORD,
+                     NETHERITE_SWORD -> AlchimiaUtils.equalsAny(this, ANY, DESTRUCTIVE_CRITS, PHANTOM_CRITS);
+
+                // Ranged weapons
+                case BOW, CROSSBOW -> AlchimiaUtils.equalsAny(this, ANY, FORCEFUL, HEALING, TRUE_AIM, VOLATILITY);
+
+                // Chestplates
+                case GOLDEN_CHESTPLATE,
+                     IRON_CHESTPLATE,
+                     DIAMOND_CHESTPLATE,
+                     NETHERITE_CHESTPLATE -> AlchimiaUtils.equalsAny(this, ANY, TOTEM_BATTERY);
+
+                // Fishing rod
+                case FISHING_ROD -> AlchimiaUtils.equalsAny(this, ANY, KNOCKBACK);
+
+                // Hoes
+                case GOLDEN_HOE,
+                     IRON_HOE,
+                     DIAMOND_HOE,
+                     NETHERITE_HOE -> AlchimiaUtils.equalsAny(this, ANY, AUTO_REPLANT);
+
+                default -> false;
+            };
+        }
+        // }}}
+
+        // {{{ Check and apply infusions
+        public boolean has(@Nonnull PersistentDataContainer pdc) {
+            if (this == TOTEM_BATTERY) {
+                if (pdc.has(this.key(), PersistentDataType.INTEGER)) return true;
             } else {
-                return false;
+                if (pdc.has(this.key(), PersistentDataType.BYTE)) return true;
+            }
+
+            return false;
+        }
+
+        public void apply(@Nonnull PersistentDataContainer pdc) {
+            if (this == TOTEM_BATTERY) {
+                pdc.set(this.key(), PersistentDataType.INTEGER, 0);
+            } else {
+                pdc.set(this.key(), PersistentDataType.BYTE, (byte) 1);
             }
         }
+        // }}}
 
-        return false;
+        // {{{ Battery of Totems-specific methods
+        // Get the number of totems stored
+        public int getTotems(@Nonnull PersistentDataContainer pdc) {
+            // Make sure the infusion is the Battery of Totems
+            if (this != TOTEM_BATTERY)
+                return -1;
+
+            return pdc.get(this.key(), PersistentDataType.INTEGER);
+        }
+
+        // Set the number of totems stored
+        public void setTotems(@Nonnull PersistentDataContainer pdc, int n) {
+            // Make sure the infusion is the Battery of Totems
+            if (this != TOTEM_BATTERY)
+                return;
+
+            pdc.set(this.key(), PersistentDataType.INTEGER, n);
+        }
+        // }}}
+
     }
+    // }}}
+
 }
+
