@@ -77,12 +77,7 @@ public class TotemListener implements Listener {
         if (e.getItem() == null || !e.getItem().isSimilar(new ItemStack(Material.TOTEM_OF_UNDYING))) {
             // If the item isn't a totem, inform the player of the current number of totems
             p.sendMessage(AlchimiaUtils.format(
-                    "<green>There "
-                    + (totems == 1
-                          ? "is 1 totem"
-                          : "are " + totems + " totems"
-                      )
-                    + " stored in the Battery of Totems."
+                    "<green>图腾电池存储了" + totems + "个不死图腾。"
                 )
             );
 
@@ -92,7 +87,7 @@ public class TotemListener implements Listener {
 
         // Check if there are already 8 totems
         if (totems > 7) {
-            p.sendMessage(AlchimiaUtils.format("<red>There is no more space for this totem!"));
+            p.sendMessage(AlchimiaUtils.format("<red>图腾电池没有多余的空间了！"));
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
             return;
         }
@@ -112,14 +107,9 @@ public class TotemListener implements Listener {
         p.getInventory().getChestplate().setItemMeta(meta);
 
         // Inform the player of the new number of totems
-        p.sendMessage(AlchimiaUtils.format("<green>Your totem has been added to the Battery of Totems."));
+        p.sendMessage(AlchimiaUtils.format("<green>图腾已被存储至图腾电池中。"));
         p.sendMessage(AlchimiaUtils.format(
-                "<green>There "
-                + (totems == 1
-                      ? "is now 1 totem"
-                      : "are now " + totems + " totems"
-                  )
-                + " stored."
+            "<green>图腾电池存储了" + totems + "个不死图腾。"
             )
         );
 
@@ -203,12 +193,7 @@ public class TotemListener implements Listener {
         };
 
         p.sendMessage(AlchimiaUtils.format(
-                color + "There "
-                + (totems == 1
-                      ? "is 1 totem"
-                      : "are " + (totems == 0 ? "no" : totems) + " totems"
-                  )
-                + " left in the Battery of Totems."
+                color + "图腾电池存储了" + totems + "个不死图腾。"
             )
         );
 

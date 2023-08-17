@@ -60,10 +60,9 @@ public class Setup {
 
         CustomItemStack condensedSoulRecipeItem = new CustomItemStack(
                 Material.DROWNED_SPAWN_EGG,
-                "&bAny Mob",
-                "&7Wither Skeletons and",
-                "&7Withers have a chance",
-                "&7to drop more souls...");
+                "&b任何生物",
+                "&7凋灵骷髅与凋灵",
+                "&7有几率掉落更多魂...");
 
         new SlimefunItem(AlchimiaUtils.ItemGroups.GENERAL, AlchimiaItems.CONDENSED_SOUL, AlchimiaUtils.RecipeTypes.SOUL_COLLECTOR, new ItemStack[] {
                 null, null, null,
